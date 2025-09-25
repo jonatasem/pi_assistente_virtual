@@ -1,0 +1,245 @@
+@use "./variables" as *;
+@use "./themes";
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  font-family: "Arial", sans-serif;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+//App
+.app-container {
+  max-width: 600px;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  h1 {
+    text-align: center;
+    color: var(--text-color);
+    margin-bottom: 1.5rem;
+  }
+}
+
+
+//TodoItem Component
+.todo-item.completed {
+  text-decoration: line-through;
+  opacity: 0.6;
+}
+
+//TodoList Component
+.todo-list-container {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-color: var(--bg-color);
+  border-radius: 8px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+
+  .add-todo-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+
+    input, select {
+      flex: 1 1 calc(50% - 5px);
+      padding: 10px;
+      border: 1px solid var(--border-color);
+      border-radius: 4px;
+      font-size: 16px;
+      background-color: var(--input-bg);
+      color: var(--text-color);
+
+      &:focus {
+        border-color: $primary-color;
+        outline: none;
+      }
+    }
+
+    button {
+      flex: 1 1 100%;
+      padding: 10px 15px;
+      background-color: $primary-color;
+      color: white;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+  }
+
+  .todo-items {
+    list-style-type: none;
+    padding: 0;
+
+    .todo-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px;
+      margin-bottom: 10px;
+      border-radius: 8px;
+      background-color: var(--item-bg);
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      border-left: 5px solid;
+      transition: border-left-color 0.3s ease;
+
+    
+      &.priority-alta {
+        border-left-color: $importance-high;
+      }
+      &.priority-media {
+        border-left-color: $importance-medium;
+      }
+      &.priority-baixa {
+        border-left-color: $importance-low;
+      }
+
+      .todo-details {
+        flex: 1;
+        span {
+          font-weight: bold;
+          font-size: 1.1rem;
+          display: block;
+          margin-bottom: 5px;
+        }
+        p {
+          font-size: 0.9rem;
+          margin: 2px 0;
+          color: var(--text-color-light);
+        }
+      }
+
+      &.completed {
+        .todo-details {
+          text-decoration: line-through;
+          color: var(--text-color-light);
+        }
+      }
+
+      input[type="text"] {
+        flex: 1;
+        padding: 5px;
+        border: 1px solid var(--border-color);
+        border-radius: 4px;
+        margin-right: 10px;
+        background-color: var(--input-bg);
+        color: var(--text-color);
+
+        &:focus {
+          border-color: $primary-color;
+          outline: none;
+        }
+      }
+
+      .todo-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 5px;
+
+        button {
+          padding: 5px 10px;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          transition: background-color 0.3s ease;
+          color: white;
+
+          &.btn-conclusion {
+            background-color: $importance-low;
+          }
+
+          &.btn-save {
+            background-color: $primary-color;
+          }
+          &.btn-edit {
+            background-color: $secondary-color;
+          }
+          &.btn-delete {
+            background-color: #dc3545;
+          }
+          &:hover {
+            opacity: 0.8;
+          }
+        }
+      }
+    }
+  }
+}
+
+//TodoForm Component
+.add-todo-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 20px;
+
+  input[type="text"],
+  input[type="date"],
+  input[type="time"],
+  select {
+    flex: 1 1 calc(50% - 5px);
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    font-size: 16px;
+    background-color: var(--input-bg);
+    color: var(--text-color);
+
+    &:focus {
+      border-color: $primary-color;
+      outline: none;
+    }
+  }
+
+  button {
+    flex: 1 1 100%;
+    padding: 10px 15px;
+    background-color: $primary-color;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+  }
+}
+
+//Responsive 499px
+@media (max-width: 499px) {
+  .app-container {
+    border-radius: 0;
+
+    h1 {
+      font-size: 20px;
+    }
+  }
+
+  .todo-list-container {
+    .add-todo-form {
+      input, select {
+        flex: 1 1 100%;
+        font-size: 14px;
+      }
+    }
+
+    .todo-items {
+      .todo-item {
+        flex-direction: column;
+        align-items: flex-start;
+        .todo-details {
+          margin-bottom: 10px;
+        }
+      }
+    }
+  }
+}

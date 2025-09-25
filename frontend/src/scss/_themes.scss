@@ -1,0 +1,47 @@
+@use "./variables" as *;
+
+body.light {
+  --bg-color: #{$background-light};
+  --text-color: #{$text-light};
+  background-color: var(--bg-color);
+  color: var(--text-color);
+
+  .app-container {
+    background-color: #fff;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+  }
+}
+
+body.dark {
+  --bg-color: #{$background-dark};
+  --text-color: #{$text-dark};
+  background-color: var(--bg-color);
+  color: var(--text-color);
+
+  .app-container {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
+  }
+}
+
+.container-themes {
+  display: flex;
+  justify-content: end;
+  margin: 0 auto 1rem;
+}
+
+// Estilo para o botão de toggle
+.theme-toggle-button {
+  background-color: var(--text-color);
+  color: var(--bg-color);
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+
+  &:hover {
+    opacity: 0.8;
+  }
+}
