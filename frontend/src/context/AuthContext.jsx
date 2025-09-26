@@ -1,26 +1,29 @@
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 
-const AuthContext = createContext(); // Cria o contexto de autenticação
+const AuthContext = createContext(); 
 
 export const AuthProvider = ({ children }) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false); // Estado de autenticação
-  const [userId, setUserId] = useState(null); // Estado do ID do usuário
+  const [isAuthenticated, setIsAuthenticated] = useState(() => {
+    return !!localStorage.getItem("token");
+  }); 
+  const [userId, setUserId] = useState(() => {
+    return localStorage.getItem("userId") || null;
+  }); 
 
-  // Função para fazer login
   const login = (token, id) => {
     setIsAuthenticated(true);
     setUserId(id);
-    localStorage.setItem("token", token); // Armazena o token no localStorage
+    localStorage.setItem("token", token); 
+    localStorage.setItem("userId", id); // CRÍTICO: Armazena o userId para uso futuro
   };
 
-  // Função para fazer logout
   const logout = () => {
     setIsAuthenticated(false);
     setUserId(null);
-    localStorage.removeItem("token"); // Remove o token do localStorage
+    localStorage.removeItem("token"); 
+    localStorage.removeItem("userId"); 
   };
 
-  // Provedor do contexto de autenticação
   return (
     <AuthContext.Provider value={{ isAuthenticated, login, logout, userId }}>
       {children}
@@ -28,7 +31,6 @@ export const AuthProvider = ({ children }) => {
   );
 };
 
-// Hook para usar o contexto de autenticação
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {

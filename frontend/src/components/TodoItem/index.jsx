@@ -5,10 +5,9 @@ const TodoItem = ({ todo }) => {
   const { deleteTodo, toggleTodo } = useTodo();
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(todo.text);
-
-  const handleSaveEdit = async () => {
+  
+  const handleSaveEdit = () => {
     if (editedText.trim()) {
-      await toggleTodo(todo._id);
       setIsEditing(false);
     }
   };
@@ -17,24 +16,25 @@ const TodoItem = ({ todo }) => {
 
   return (
     <li className={`todo-item ${todo.status === "concluído" ? "completed" : ""} ${importanceClass}`}>
-      {isEditing ? (
-        <input
-          type="text"
-          value={editedText}
-          onChange={(e) => setEditedText(e.target.value)}
-          onBlur={handleSaveEdit}
-          onKeyDown={(e) => e.key === "Enter" && handleSaveEdit()}
-          autoFocus
-        />
-      ) : (
-        <div className="todo-details">
-          <span>{todo.text}</span>
-          <p>Data: {todo.date}</p>
-          <p>Horário: {todo.time}</p>
-          <p>Local: {todo.location}</p>
-          <p>Importância: {todo.importance}</p>
-        </div>
-      )}
+      <div className="item-content">
+        {isEditing ? (
+          <input
+            type="text"
+            value={editedText}
+            onChange={(e) => setEditedText(e.target.value)}
+            onBlur={handleSaveEdit}
+            onKeyDown={(e) => e.key === "Enter" && handleSaveEdit()}
+            autoFocus
+          />
+        ) : (
+          <div className="todo-details">
+            <span className="todo-text">{todo.text}</span>
+            <p className="todo-meta">Data: **{todo.date}** | Horário: **{todo.time}**</p>
+            {todo.location && <p className="todo-meta">Local: {todo.location}</p>}
+            <p className={`todo-importance ${importanceClass}`}>Importância: {todo.importance}</p>
+          </div>
+        )}
+      </div>
 
       <div className="todo-actions">
         {todo.status !== "concluído" && (

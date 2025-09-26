@@ -94,4 +94,3 @@ Certifique-se de ter as seguintes ferramentas instaladas em seu ambiente local:
 ## Licença
 
 Este projeto está sob a licença [MIT License](LICENSE).
-

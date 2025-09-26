@@ -12,33 +12,24 @@ const TodoForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
+    const todoDateTime = new Date(`${date}T${time}`);
     const now = new Date();
-    const todoDate = new Date(`${date}T${time}`);
 
-    // Validações
-    if (!text.trim()) {
-      setError("O nome da tarefa não pode estar vazio.");
+    if (!text.trim() || !date || !time) {
+      setError("Nome, Data e Hora são obrigatórios.");
       return;
     }
 
-    if (!date) {
-      setError("A data é obrigatória.");
+    if (todoDateTime < now) {
+      setError("A data e o horário devem ser futuros para o lembrete.");
       return;
     }
 
-    if (!time) {
-      setError("A hora é obrigatória.");
-      return;
-    }
-
-    if (todoDate < now) {
-      setError("A data e o horário devem ser futuros.");
-      return;
-    }
-
-    // Limpa o erro se todas as validações passarem
     setError("");
     addTodo({ text, date, time, location, importance });
+    
+    // Limpa o formulário
     setText("");
     setDate("");
     setTime("");
@@ -48,7 +39,8 @@ const TodoForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="add-todo-form">
-      {error && <div className="error">{error}</div>}
+      <h3>Adicionar Novo Lembrete</h3>
+      {error && <div className="error-message">{error}</div>}
       <label>
         <input
           type="text"
@@ -58,29 +50,31 @@ const TodoForm = () => {
           required
         />
       </label>
-      <label>
-        Data:
-        <input
-          type="date"
-          value={date}
-          onChange={(e) => setDate(e.target.value)}
-          required
-        />
-      </label>
-      <label>
-        Hora:
-        <input
-          type="time"
-          value={time}
-          onChange={(e) => setTime(e.target.value)}
-          required
-        />
-      </label>
+      <div className="date-time-inputs">
+        <label>
+          Data:
+          <input
+            type="date"
+            value={date}
+            onChange={(e) => setDate(e.target.value)}
+            required
+          />
+        </label>
+        <label>
+          Hora:
+          <input
+            type="time"
+            value={time}
+            onChange={(e) => setTime(e.target.value)}
+            required
+          />
+        </label>
+      </div>
       <label>
         Local:
         <input
           type="text"
-          placeholder="Local"
+          placeholder="Local (Opcional)"
           value={location}
           onChange={(e) => setLocation(e.target.value)}
         />
@@ -96,7 +90,7 @@ const TodoForm = () => {
           <option value="alta">Alta</option>
         </select>
       </label>
-      <button type="submit">Adicionar</button>
+      <button type="submit" className="btn-add-todo">Adicionar Lembrete</button>
     </form>
   );
 };

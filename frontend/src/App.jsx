@@ -1,35 +1,37 @@
 import { useEffect } from "react";
-import ThemeToggle from "./components/Themes";
 import TodoForm from "./components/TodoForm";
 import TodoList from "./components/TodoList";
 import Auth from "./components/Auth/Auth";
 import { useAuth } from "./context/AuthContext";
-import { useTodo } from "./context/TodoContext"; // Importa o contexto de tarefas
+import { useTodo } from "./context/TodoContext"; 
+import ThemeToggle from "./components/Themes/index";
+import LogoutButton from "./components/LogoutButton"; // Importa o botão de logout
 
 function App() {
   const { isAuthenticated } = useAuth(); // Obtém o estado de autenticação
   const { fetchTodos } = useTodo(); // Obtém a função para buscar tarefas
 
   useEffect(() => {
-    // Solicita permissão para notificações
-    if ("Notification" in window) {
+    if ("Notification" in window && Notification.permission !== "granted") {
       Notification.requestPermission();
     }
   }, []);
   
   useEffect(() => {
-    // Busca tarefas somente se o usuário estiver autenticado
     if (isAuthenticated) {
       fetchTodos();
     }
-  }, [isAuthenticated, fetchTodos]); // Dependências para o efeito
+  }, [isAuthenticated, fetchTodos]); 
 
   return (
     <div className="app-container">
-      <ThemeToggle /> 
-      <h1>Minha Lista de Tarefas</h1>
-      {!isAuthenticated ? <Auth /> : ( 
+      <ThemeToggle /> {/* Botão de tema sempre visível */}
+      {!isAuthenticated ? (
+        <Auth /> 
+      ) : ( 
         <>
+          <LogoutButton /> {/* Botão de logout quando logado */}
+          <h1 className="app-title">Seus Lembretes</h1>
           <TodoForm /> 
           <TodoList /> 
         </>

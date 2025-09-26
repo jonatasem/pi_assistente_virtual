@@ -1,92 +1,67 @@
-import React, { createContext, useContext, useState } from "react";
-import { useAuth } from "./AuthContext"; // Importa o contexto de autenticação
+import React, { createContext, useContext, useState, useCallback } from "react";
+import { useAuth } from "./AuthContext"; 
 
-const TodoContext = createContext(); // Cria o contexto de tarefas
+const TodoContext = createContext(); 
 
 export const TodoProvider = ({ children }) => {
-  const [todos, setTodos] = useState([]); // Estado das tarefas
-  const { isAuthenticated } = useAuth(); // Obtém o estado de autenticação
+  const [todos, setTodos] = useState([]); 
+  const { isAuthenticated } = useAuth(); 
 
-  // Função para buscar tarefas
-  const fetchTodos = async () => {
-    const token = localStorage.getItem("token"); // Recupera o token
-    if (!token || !isAuthenticated) { // Verifica se o token existe e se o usuário está autenticado
-      console.error("Token não encontrado ou usuário não autenticado.");
-      return;
-    }
+  const getAuthHeaders = () => {
+    const token = localStorage.getItem("token");
+    return {
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    };
+  };
+
+  const fetchTodos = useCallback(async () => {
+    if (!isAuthenticated) return;
     
     try {
       const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos`, {
-        headers: {
-          'Authorization': `Bearer ${token}` // Adiciona o token no cabeçalho
-        }
+        headers: getAuthHeaders()
       });
       if (!response.ok) {
-        console.error("Erro ao buscar tarefas:", response.statusText);
-        return;
+        throw new Error("Erro ao buscar tarefas.");
       }
       const data = await response.json();
-      setTodos(data); // Atualiza o estado com as tarefas recebidas
+      setTodos(data); 
     } catch (error) {
-      console.error("Erro na requisição de tarefas:", error);
+      console.error("Erro na requisição de tarefas:", error.message);
     }
-  };
+  }, [isAuthenticated]);
 
-  // Função para adicionar uma nova tarefa
   const addTodo = async (newTodo) => {
-    const token = localStorage.getItem("token");
     try {
       const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos`, {
         method: 'POST',
-        headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(newTodo) // Envia a nova tarefa como JSON
+        headers: getAuthHeaders(),
+        body: JSON.stringify(newTodo) 
       });
       if (response.ok) {
         const todo = await response.json();
-        setTodos((prev) => [...prev, todo]); // Adiciona a nova tarefa ao estado
+        setTodos((prev) => [...prev, todo]); 
       } else {
-        console.error("Erro ao adicionar tarefa:", response.statusText);
+        throw new Error("Erro ao adicionar tarefa.");
       }
     } catch (error) {
-      console.error("Erro na requisição de adição:", error);
+      console.error("Erro na requisição de adição:", error.message);
     }
   };
 
-  // Função para excluir uma tarefa
-  const deleteTodo = async (id) => {
-    const token = localStorage.getItem("token");
-    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos/${id}`, {
-      method: 'DELETE',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-      }
-    });
-    setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== id)); // Remove a tarefa do estado
+  const deleteTodo = (id) => {
+      console.log(`Tarefa ${id} excluída (Ação de frontend)`);
+      setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== id));
+  };
+  
+  const toggleTodo = (id) => {
+      console.log(`Tarefa ${id} alterada (Ação de frontend)`);
+      setTodos((prevTodos) =>
+          prevTodos.map((todo) => (todo._id === id ? { ...todo, status: todo.status === "pendente" ? "concluído" : "pendente" } : todo))
+      );
   };
 
-  // Função para alternar o status de uma tarefa
-  const toggleTodo = async (id) => {
-    const todo = todos.find(todo => todo._id === id);
-    const updatedTodo = { ...todo, status: todo.status === "pendente" ? "concluído" : "pendente" };
-    const token = localStorage.getItem("token");
-
-    await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos/${id}`, {
-      method: 'PUT',
-      headers: {
-        'Authorization': `Bearer ${token}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify(updatedTodo) // Envia a tarefa atualizada como JSON
-    });
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) => (todo._id === id ? updatedTodo : todo)) // Atualiza o estado com a tarefa modificada
-    );
-  };
-
-  // Exposição das funções e estado através do contexto
   const value = {
     todos,
     addTodo,
@@ -95,10 +70,9 @@ export const TodoProvider = ({ children }) => {
     fetchTodos,
   };
 
-  return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>; // Provedor do contexto
+  return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>; 
 };
 
-// Hook para usar o contexto de tarefas
 export const useTodo = () => {
   const context = useContext(TodoContext);
   if (!context) {
