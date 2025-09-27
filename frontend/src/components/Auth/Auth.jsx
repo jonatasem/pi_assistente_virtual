@@ -1,5 +1,8 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
+import ThemeToggle from "../Themes";
+
+import imgAuthMen from "../../assets/images/auth-men.png"
 
 const Auth = () => {
   const { login } = useAuth();
@@ -10,7 +13,7 @@ const Auth = () => {
     name: "",
     email: "",
     password: "",
-    phoneNumber: "" // CRÍTICO: Campo obrigatório para o backend
+    phoneNumber: ""
   });
 
   const handleChange = (e) => {
@@ -23,7 +26,7 @@ const Auth = () => {
     setError(null); 
     
     if (isRegistering && !formData.phoneNumber.match(/^\+\d{11,15}$/)) {
-        setError("Telefone inválido. Use o formato E.164 (ex: +5511999998888).");
+        setError("Telefone inválido. Use o formato (ex: +5511999998888).");
         return;
     }
 
@@ -56,12 +59,14 @@ const Auth = () => {
 
   return (
     <section className="container-auth">
+      <ThemeToggle />
       <article className="head-auth-left">
         <h1>Entre e Simplifique Sua Vida com Seu Assistente Pessoal</h1>
+        <img src={imgAuthMen} alt="imagem men auth" />
       </article>
       <article className="main-auth-right">
         <form onSubmit={handleSubmit}>
-          <h2>Olá, seja bem vinda(o)!</h2>
+          <h2>Criar conta</h2>
           {error && <div className="error-message">{error}</div>} 
           
           {isRegistering && (
@@ -77,7 +82,7 @@ const Auth = () => {
                 <input
                     type="tel"
                     name="phoneNumber"
-                    placeholder="Telefone (+5511999998888 - E.164)"
+                    placeholder="Telefone (+5511999998888)"
                     value={formData.phoneNumber}
                     onChange={handleChange}
                     required

@@ -11,5 +11,40 @@ body {
   font-family: "Arial", sans-serif;
 }
 
+.container-auth {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  background-color: #959dff;
+
+  .container-themes {
+    position: absolute;
+    top: 25px;
+    right: 25px;
+  }
+
+  .head-auth-left {
+    color: white;
+    width: 500px;
+    text-align: center;
+    padding: 2rem 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+
+    img {
+      width: 300px;
+    }
+  }
+
+  .main-auth-right {
+    width: calc(100% - 500px);
+    background-color: white;
+    border-radius: 2.5rem 0 0 2.5rem;
+    padding: 2.5rem;
+  }
+
+}
 
 

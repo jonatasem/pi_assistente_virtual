@@ -4,8 +4,7 @@ import TodoList from "./components/TodoList";
 import Auth from "./components/Auth/Auth";
 import { useAuth } from "./context/AuthContext";
 import { useTodo } from "./context/TodoContext"; 
-import ThemeToggle from "./components/Themes/index";
-import LogoutButton from "./components/LogoutButton"; // Importa o botão de logout
+import LogoutButton from "./components/LogoutButton";
 
 function App() {
   const { isAuthenticated } = useAuth(); // Obtém o estado de autenticação
@@ -25,7 +24,6 @@ function App() {
 
   return (
     <div className="app-container">
-      <ThemeToggle /> {/* Botão de tema sempre visível */}
       {!isAuthenticated ? (
         <Auth /> 
       ) : ( 
