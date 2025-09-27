@@ -39,7 +39,6 @@ const TodoForm = () => {
 
   return (
     <form onSubmit={handleSubmit} className="add-todo-form">
-      <h3>Adicionar Novo Lembrete</h3>
       {error && <div className="error-message">{error}</div>}
       <label>
         <input

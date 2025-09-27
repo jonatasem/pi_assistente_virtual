@@ -5,6 +5,8 @@ import Auth from "./components/Auth/Auth";
 import { useAuth } from "./context/AuthContext";
 import { useTodo } from "./context/TodoContext"; 
 import LogoutButton from "./components/LogoutButton";
+import Dashboard from "./pages/Dashboard";
+import ThemeToggle from "./components/Themes";
 
 function App() {
   const { isAuthenticated } = useAuth(); // Obtém o estado de autenticação
@@ -23,15 +25,15 @@ function App() {
   }, [isAuthenticated, fetchTodos]); 
 
   return (
-    <div className="app-container">
+    <div className="container-app">
+
+      <ThemeToggle />
       {!isAuthenticated ? (
         <Auth /> 
       ) : ( 
         <>
-          <LogoutButton /> {/* Botão de logout quando logado */}
-          <h1 className="app-title">Seus Lembretes</h1>
-          <TodoForm /> 
-          <TodoList /> 
+          <LogoutButton />
+          <Dashboard />
         </>
       )}
     </div>

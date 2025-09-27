@@ -6,7 +6,7 @@ import imgAuthMen from "../../assets/images/auth-men.png"
 
 const Auth = () => {
   const { login } = useAuth();
-  const [isRegistering, setIsRegistering] = useState(false);
+  const [isRegistering, setIsRegistering] = useState(true);
   const [error, setError] = useState(null); 
   
   const [formData, setFormData] = useState({
@@ -61,7 +61,7 @@ const Auth = () => {
     <section className="container-auth">
       <ThemeToggle />
       <article className="head-auth-left">
-        <h1>Entre e Simplifique Sua Vida com Seu Assistente Pessoal</h1>
+        <h1>Entre e <span>Simplifique Sua Vida</span> com Seu Assistente Pessoal</h1>
         <img src={imgAuthMen} alt="imagem men auth" />
       </article>
       <article className="main-auth-right">
@@ -74,7 +74,7 @@ const Auth = () => {
                 <input
                     type="text"
                     name="name"
-                    placeholder="Nome"
+                    placeholder="Nome Completo"
                     value={formData.name}
                     onChange={handleChange}
                     required
@@ -82,7 +82,7 @@ const Auth = () => {
                 <input
                     type="tel"
                     name="phoneNumber"
-                    placeholder="Telefone (+5511999998888)"
+                    placeholder="Telefone Pessoal (+5511999998888)"
                     value={formData.phoneNumber}
                     onChange={handleChange}
                     required
@@ -92,7 +92,7 @@ const Auth = () => {
           <input
             type="email"
             name="email"
-            placeholder="Email"
+            placeholder="Endereço de Email"
             value={formData.email}
             onChange={handleChange}
             required
