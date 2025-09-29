@@ -1,12 +1,9 @@
 import { useEffect } from "react";
-import TodoForm from "./components/TodoForm";
-import TodoList from "./components/TodoList";
 import Auth from "./components/Auth/Auth";
 import { useAuth } from "./context/AuthContext";
 import { useTodo } from "./context/TodoContext"; 
 import LogoutButton from "./components/LogoutButton";
 import Dashboard from "./pages/Dashboard";
-import ThemeToggle from "./components/Themes";
 
 function App() {
   const { isAuthenticated } = useAuth(); // Obtém o estado de autenticação
@@ -26,8 +23,6 @@ function App() {
 
   return (
     <div className="container-app">
-
-      <ThemeToggle />
       {!isAuthenticated ? (
         <Auth /> 
       ) : ( 

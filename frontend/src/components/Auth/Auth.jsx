@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-import ThemeToggle from "../Themes";
 
-import imgAuthMen from "../../assets/images/auth-men.png"
+import { FaChevronRight } from "react-icons/fa6";
 
 const Auth = () => {
   const { login } = useAuth();
@@ -59,57 +58,73 @@ const Auth = () => {
 
   return (
     <section className="container-auth">
-      <ThemeToggle />
-      <article className="head-auth-left">
-        <h1>Entre e <span>Simplifique Sua Vida</span> com Seu Assistente Pessoal</h1>
-        <img src={imgAuthMen} alt="imagem men auth" />
-      </article>
-      <article className="main-auth-right">
+      <article className="auth-head">
         <form onSubmit={handleSubmit}>
-          <h2>Criar conta</h2>
-          {error && <div className="error-message">{error}</div>} 
-          
+          <h3>WORK | SMART</h3>
+          <h1>Sign Up</h1>
           {isRegistering && (
             <>
-                <input
+                <label htmlFor="name">
+                  Nome:
+                  <input
                     type="text"
                     name="name"
-                    placeholder="Nome Completo"
+                    placeholder="Name"
                     value={formData.name}
                     onChange={handleChange}
                     required
-                />
-                <input
+                  />
+                </label>
+                <label htmlFor="phoneNumber">
+                  Telefone:
+                  <input
                     type="tel"
                     name="phoneNumber"
-                    placeholder="Telefone Pessoal (+5511999998888)"
+                    placeholder="(+5511999998888)"
                     value={formData.phoneNumber}
                     onChange={handleChange}
                     required
-                />
+                  />
+                </label>
             </>
           )}
-          <input
-            type="email"
-            name="email"
-            placeholder="Endereço de Email"
-            value={formData.email}
-            onChange={handleChange}
-            required
-          />
-          <input
-            type="password"
-            name="password"
-            placeholder="Senha"
-            value={formData.password}
-            onChange={handleChange}
-            required
-          />
-          <button type="submit" className="btn-login">{isRegistering ? "Registrar" : "Login"}</button>
-          <button type="button" onClick={() => setIsRegistering(!isRegistering)} className="btn-register">
-            {isRegistering ? "Já tem uma conta? Login" : "Não tem uma conta? Registrar"}
-          </button>
+          <label htmlFor="email">
+            Email:
+            <input
+              type="email"
+              name="email"
+              placeholder="usuario@gmail.com"
+              value={formData.email}
+              onChange={handleChange}
+              required
+            />
+          </label>
+          <label htmlFor="password">
+            Senha:
+            <input
+              type="password"
+              name="password"
+              placeholder="*****"
+              value={formData.password}
+              onChange={handleChange}
+              required
+            />
+          </label>         
+          <div className="container-btn-login">
+            <button type="submit" className="btn-login">
+              {isRegistering ? "" : ""}<FaChevronRight />
+            </button>
+            {error && <div className="error-message">{error}</div>} 
+          </div>
         </form>
+      </article>
+      <article className="auth-main">
+          <div className="end-layout-main">
+            <p>Welcome to the future of work.</p>
+            <button type="button" onClick={() => setIsRegistering(!isRegistering)} className="btn-register">
+              {isRegistering ? "Já tem uma conta? Login" : "Não tem uma conta? Registrar"}
+            </button>
+          </div>
       </article>
     </section>
   );
