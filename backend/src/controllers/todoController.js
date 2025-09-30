@@ -32,4 +32,46 @@ const getTodos = async (req, res) => {
   }
 };
 
-module.exports = { createTodo, getTodos };
+// Atualizar tarefa
+const updateTodo = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user.id; // garante que é do usuário autenticado
+  const { text, date, time, location, importance, status } = req.body;
+
+  try {
+    const todo = await Todo.findOneAndUpdate(
+      { _id: id, userId }, // só atualiza se for do usuário
+      { text, date, time, location, importance, status },
+      { new: true } // retorna a versão atualizada
+    );
+
+    if (!todo) {
+      return res.status(404).json({ msg: 'Tarefa não encontrada' });
+    }
+
+    res.json(todo);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).json({ msg: 'Erro no servidor ao atualizar tarefa' });
+  }
+};
+
+// Excluir tarefa
+const deleteTodo = async (req, res) => {
+  const { id } = req.params;
+  const userId = req.user.id;
+
+  try {
+    const todo = await Todo.findOne({ _id: id, userId });
+    if (!todo) return res.status(404).json({ msg: 'Tarefa não encontrada' });
+
+    await todo.deleteOne();
+    res.json({ msg: 'Tarefa deletada com sucesso', id });
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ msg: 'Erro ao deletar a tarefa' });
+  }
+};
+
+
+module.exports = { createTodo, getTodos, deleteTodo };
