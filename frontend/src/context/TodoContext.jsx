@@ -50,11 +50,24 @@ export const TodoProvider = ({ children }) => {
     }
   };
 
-  const deleteTodo = (id) => {
-      console.log(`Tarefa ${id} excluída (Ação de frontend)`);
-      setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== id));
-  };
-  
+  const deleteTodo = async (id) => {
+  try {
+    const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos/${id}`, {
+      method: "DELETE",
+      headers: getAuthHeaders()
+    });
+
+    if (!response.ok) {
+      throw new Error("Erro ao deletar tarefa no servidor");
+    }
+
+    setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== id));
+    console.log(`Tarefa ${id} excluída com sucesso`);
+  } catch (error) {
+    console.error("Erro ao deletar tarefa:", error.message);
+  }
+};
+
   const toggleTodo = (id) => {
       console.log(`Tarefa ${id} alterada (Ação de frontend)`);
       setTodos((prevTodos) =>
