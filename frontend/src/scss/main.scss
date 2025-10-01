@@ -238,6 +238,9 @@ body {
 
     // --- Estilos da Lista de Tarefas (TodoList) ---
     .todo-list-container {
+      padding: 1.5rem;
+      border-radius: 1.5rem;
+
       .list-title {
         font-size: 1.5rem;
         color: var(--color-primary);
