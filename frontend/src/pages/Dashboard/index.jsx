@@ -12,11 +12,9 @@ export default function Dashboard() {
         <section className="container-dashboard">
             <h1>Olá, {userName}</h1>
             <ThemeToggle />
-            <h2>Dashboard aqui</h2>
             <h1 className="app-title">Adicionar Novo Lembrete</h1>
             <TodoForm /> 
             <TodoList />
         </section>
     );
 }
-

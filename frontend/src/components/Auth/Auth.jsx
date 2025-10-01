@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
-
 import { FaChevronRight } from "react-icons/fa6";
 
 const Auth = () => {
@@ -60,8 +59,8 @@ const Auth = () => {
     <section className="container-auth">
       <article className="auth-head">
         <form onSubmit={handleSubmit}>
-          <h3>WORK | SMART</h3>
-          <h1>Sign Up</h1>
+          <h3>P.I - Assistente | Virtual</h3>
+          <h1>{isRegistering ? "Registrar" : "Login"}</h1>
           {isRegistering && (
             <>
                 <label htmlFor="name">
@@ -69,7 +68,7 @@ const Auth = () => {
                   <input
                     type="text"
                     name="name"
-                    placeholder="Name"
+                    placeholder="Francisco Nascimento"
                     value={formData.name}
                     onChange={handleChange}
                     required
@@ -80,7 +79,7 @@ const Auth = () => {
                   <input
                     type="tel"
                     name="phoneNumber"
-                    placeholder="(+5511999998888)"
+                    placeholder="+5511999998888"
                     value={formData.phoneNumber}
                     onChange={handleChange}
                     required
@@ -93,7 +92,7 @@ const Auth = () => {
             <input
               type="email"
               name="email"
-              placeholder="usuario@gmail.com"
+              placeholder="francisco@gmail.com"
               value={formData.email}
               onChange={handleChange}
               required
@@ -112,7 +111,7 @@ const Auth = () => {
           </label>         
           <div className="container-btn-login">
             <button type="submit" className="btn-login">
-              {isRegistering ? "" : ""}<FaChevronRight />
+              <FaChevronRight />
             </button>
             {error && <div className="error-message">{error}</div>} 
           </div>
@@ -120,7 +119,7 @@ const Auth = () => {
       </article>
       <article className="auth-main">
           <div className="end-layout-main">
-            <p>Welcome to the future of work.</p>
+            <p>Bem vindo ao futuro.</p>
             <button type="button" onClick={() => setIsRegistering(!isRegistering)} className="btn-register">
               {isRegistering ? "Já tem uma conta? Login" : "Não tem uma conta? Registrar"}
             </button>
