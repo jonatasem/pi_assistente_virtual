@@ -53,7 +53,7 @@ body {
 
     .auth-head {
       width: 600px;
-      padding: 5rem 4rem;
+      padding: 5rem 2rem;
 
       h3 {
         margin-bottom: 1.5rem;
@@ -380,15 +380,39 @@ body {
   }
 }
 
-// --- Media Queries ---
-@media (max-width: 1366px) {
+
+@media (max-width:899px) {
   .container-app {
     .container-auth {
-      min-height: 100vh;
+      flex-direction: column;
+      max-height: none;
+
+      .auth-head {
+        width: 100%;
+      }
+      .auth-main {
+        height: 100%;
+      }
+    } 
+  } 
+}
+
+@media (max-width:499px) {
+  .container-app {
+    .container-auth {
+      .auth-main {
+        .end-layout-main {
+          flex-direction: column;
+
+          p {
+            margin: 0 0 1rem 0;
+          }
+        }
+      }
+
+      .auth-head {
+        padding: 3rem 1rem 2rem 1rem;
+      }
     }
   }
 }
-
-
-
-//#007aff;
