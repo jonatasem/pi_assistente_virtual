@@ -10,22 +10,21 @@ const UserSchema = new mongoose.Schema({
   email: {
     type: String,
     required: true,
-    unique: true, // Garante que não haja emails duplicados
+    unique: true, 
     lowercase: true,
   },
   password: {
     type: String,
     required: true,
   },
-  // CRÍTICO: Campo para o número de telefone (formato E.164: +5511999998888)
   phoneNumber: {
     type: String,
     required: true, 
-    unique: true,
+    unique: true, // Garante que cada número seja único
   },
 });
 
-// Middleware PRE-SAVE: Hash da senha antes de salvar no banco
+// Middleware PRE-SAVE: Hash da senha
 UserSchema.pre('save', async function(next) {
   if (!this.isModified('password')) {
     return next();
@@ -35,7 +34,7 @@ UserSchema.pre('save', async function(next) {
   next();
 });
 
-// Método para comparar a senha digitada com a senha hash
+// Método para comparar a senha
 UserSchema.methods.comparePassword = async function(candidatePassword) {
   return await bcrypt.compare(candidatePassword, this.password);
 };

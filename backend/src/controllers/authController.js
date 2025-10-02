@@ -7,10 +7,15 @@ const register = async (req, res) => {
   try {
     let user = await User.findOne({ email });
     if (user) {
-      return res.status(400).json({ msg: 'Usuário já existe' });
+      return res.status(400).json({ msg: 'Email já cadastrado.' });
     }
     
-    // Cria um novo usuário com todos os dados
+    // Verifica se o telefone já existe
+    user = await User.findOne({ phoneNumber });
+    if (user) {
+        return res.status(400).json({ msg: 'Telefone já cadastrado. Tente fazer login.' });
+    }
+
     user = new User({ name, email, password, phoneNumber }); 
     await user.save();
     
@@ -21,9 +26,6 @@ const register = async (req, res) => {
     res.json({ token, userId: user.id, msg: 'Registro bem-sucedido' });
   } catch (err) {
     console.error(err.message);
-    if (err.code === 11000) {
-        return res.status(400).json({ msg: 'Email ou Telefone já cadastrado.' });
-    }
     res.status(500).send('Erro no servidor durante o registro.');
   }
 };

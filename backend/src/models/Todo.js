@@ -4,20 +4,18 @@ const mongoose = require('mongoose');
 const TodoSchema = new mongoose.Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: 'User', // Referência ao modelo de Usuário
+    ref: 'User', 
     required: true,
   },
   text: {
     type: String,
     required: true,
   },
-  // Usaremos String para facilitar a formatação da data (ex: "2025-01-01")
-  date: { 
+  date: { // Ex: "2025-01-01"
     type: String,
     required: true,
   },
-  // Usaremos String para a hora (ex: "10:30:00")
-  time: {
+  time: { // Ex: "10:30:00"
     type: String,
     required: true,
   },
@@ -34,6 +32,6 @@ const TodoSchema = new mongoose.Schema({
     type: String,
     default: 'pendente',
   },
-}, { timestamps: true }); // Adiciona campos createdAt e updatedAt
+}, { timestamps: true }); 
 
 module.exports = mongoose.model('Todo', TodoSchema);

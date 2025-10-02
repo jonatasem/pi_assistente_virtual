@@ -12,7 +12,7 @@ const TodoForm = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
+
     const todoDateTime = new Date(`${date}T${time}`);
     const now = new Date();
 
@@ -28,7 +28,7 @@ const TodoForm = () => {
 
     setError("");
     addTodo({ text, date, time, location, importance });
-    
+
     // Limpa o formulário
     setText("");
     setDate("");
@@ -89,7 +89,9 @@ const TodoForm = () => {
           <option value="alta">Alta</option>
         </select>
       </label>
-      <button type="submit" className="btn-add-todo">Adicionar Lembrete</button>
+      <button type="submit" className="btn-add-todo">
+        Adicionar Lembrete
+      </button>
     </form>
   );
 };

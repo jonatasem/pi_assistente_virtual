@@ -70,7 +70,7 @@ body.dark {
   margin: 1.5rem 0 3rem 0;
   display: flex;
   flex-direction: column;
-  gap: 1.2rem; 
+  gap: 1.2rem;
 
   input[type="text"],
   input[type="date"],
@@ -94,7 +94,9 @@ body.dark {
   align-items: center;
   padding: 1rem 1.5rem;
   border-radius: 1rem;
-  transition: box-shadow 0.3s, transform 0.1s;
+  transition:
+    box-shadow 0.3s,
+    transform 0.1s;
 
   &:hover {
     transform: scale(1.02); // Efeito de zoom ao passar o mouse
@@ -113,7 +115,9 @@ body.dark {
 
   .todo-actions {
     button {
-      transition: background-color 0.3s, transform 0.2s; // Transição suave nos botões
+      transition:
+        background-color 0.3s,
+        transform 0.2s; // Transição suave nos botões
 
       &:hover {
         transform: scale(1.05); // Efeito de crescimento ao passar o mouse

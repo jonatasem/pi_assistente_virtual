@@ -1,65 +1,123 @@
-import  { createContext, useContext, useState, useCallback } from "react";
-import { useAuth } from "./AuthContext"; 
+import { createContext, useContext, useState, useCallback } from "react";
+import { useAuth } from "./AuthContext";
 
-const TodoContext = createContext(); 
+const TodoContext = createContext();
 
 export const TodoProvider = ({ children }) => {
-  const [todos, setTodos] = useState([]); 
-  const { isAuthenticated } = useAuth(); 
+  const [todos, setTodos] = useState([]);
+  const [isLoading, setIsLoading] = useState(false); // 💡 NOVO: Estado de carregamento
+  const [error, setError] = useState(null); // 💡 NOVO: Estado de erro
+  const { isAuthenticated } = useAuth();
 
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
     return {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
     };
   };
 
   const fetchTodos = useCallback(async () => {
     if (!isAuthenticated) return;
-    
+
+    setError(null);
+    setIsLoading(true); // Inicia carregamento
+
     try {
       const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos`, {
-        headers: getAuthHeaders()
+        headers: getAuthHeaders(),
       });
       if (!response.ok) {
         throw new Error("Erro ao buscar tarefas.");
       }
       const data = await response.json();
-      setTodos(data); 
-    } catch (error) {
-      console.error("Erro na requisição de tarefas:", error.message);
+      setTodos(data);
+    } catch (fetchError) {
+      console.error("Erro na requisição de tarefas:", fetchError.message);
+      setError("Não foi possível carregar suas tarefas. Tente recarregar a página.");
+    } finally {
+      setIsLoading(false); // Finaliza o carregamento
     }
   }, [isAuthenticated]);
 
   const addTodo = async (newTodo) => {
     try {
       const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos`, {
-        method: 'POST',
+        method: "POST",
         headers: getAuthHeaders(),
-        body: JSON.stringify(newTodo) 
+        body: JSON.stringify(newTodo),
       });
       if (response.ok) {
         const todo = await response.json();
-        setTodos((prev) => [...prev, todo]); 
+        setTodos((prev) => [...prev, todo]);
       } else {
-        throw new Error("Erro ao adicionar tarefa.");
+        const errorData = await response.json();
+        throw new Error(errorData.msg || "Erro ao adicionar tarefa.");
       }
-    } catch (error) {
-      console.error("Erro na requisição de adição:", error.message);
+    } catch (addError) {
+      console.error("Erro na requisição de adição:", addError.message);
+      setError(`Erro ao adicionar: ${addError.message}`);
     }
   };
 
-  const deleteTodo = (id) => {
-      console.log(`Tarefa ${id} excluída (Ação de frontend)`);
+  const deleteTodo = async (id) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos/${id}`, {
+        method: "DELETE",
+        headers: getAuthHeaders(),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.msg || "Erro ao excluir tarefa.");
+      }
+
       setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== id));
+    } catch (deleteError) {
+      console.error("Erro na exclusão da tarefa:", deleteError.message);
+      setError(`Erro ao excluir: ${deleteError.message}`);
+    }
   };
-  
-  const toggleTodo = (id) => {
-      console.log(`Tarefa ${id} alterada (Ação de frontend)`);
+
+  const toggleTodo = async (id) => {
+    const todoToUpdate = todos.find((todo) => todo._id === id);
+    if (!todoToUpdate) return;
+
+    const updatedStatus = todoToUpdate.status === "pendente" ? "concluído" : "pendente";
+
+    // Otimização: Atualização otimista (UI atualiza antes da resposta)
+    setTodos((prevTodos) =>
+      prevTodos.map((todo) =>
+        todo._id === id ? { ...todo, status: updatedStatus } : todo
+      )
+    );
+
+    try {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos/${id}`, {
+        method: "PATCH",
+        headers: {
+          ...getAuthHeaders(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ status: updatedStatus }),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.msg || "Erro ao atualizar tarefa.");
+      }
+
+    } catch (toggleError) {
+      console.error("Erro na atualização da tarefa:", toggleError.message);
+      setError(`Erro ao atualizar: ${toggleError.message}`);
+
+      // Reverter o estado em caso de falha na API
       setTodos((prevTodos) =>
-          prevTodos.map((todo) => (todo._id === id ? { ...todo, status: todo.status === "pendente" ? "concluído" : "pendente" } : todo))
+        prevTodos.map((todo) =>
+          todo._id === id ? { ...todo, status: todoToUpdate.status } : todo
+        )
       );
+    }
   };
 
   const value = {
@@ -68,9 +126,12 @@ export const TodoProvider = ({ children }) => {
     deleteTodo,
     toggleTodo,
     fetchTodos,
+    isLoading, // 💡 EXPOR
+    error, // 💡 EXPOR
+    setError, // 💡 Para limpar erros de fora
   };
 
-  return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>; 
+  return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
 };
 
 export const useTodo = () => {

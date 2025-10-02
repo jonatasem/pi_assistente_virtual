@@ -10,11 +10,9 @@ const TodoList = () => {
       <h3 className="list-title">Minhas Tarefas</h3>
       <ul className="todo-items">
         {todos.length === 0 ? (
-            <p className="no-todos-msg">Nenhum lembrete agendado. Adicione um!</p>
+          <p className="no-todos-msg">Nenhum lembrete agendado. Adicione um!</p>
         ) : (
-             todos.map((todo) => (
-                <TodoItem key={todo._id} todo={todo} />
-            ))
+          todos.map((todo) => <TodoItem key={todo._id} todo={todo} />)
         )}
       </ul>
     </div>

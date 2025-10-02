@@ -1,4 +1,4 @@
-require('dotenv').config(); // Carrega variáveis de ambiente do .env
+require('dotenv').config();
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
@@ -6,6 +6,7 @@ const cors = require('cors');
 // Importa arquivos de rota
 const authRoutes = require('./routes/authRoutes');
 const todoRoutes = require('./routes/todoRoutes');
+const userRoutes = require('./routes/userRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 5000;
@@ -22,6 +23,7 @@ mongoose.connect(process.env.MONGO_URI)
 // Rotas da API
 app.use('/api/auth', authRoutes);
 app.use('/api/todos', todoRoutes);
+app.use('/api/user', userRoutes);
 
 // Inicia o servidor
 app.listen(PORT, () => console.log(`Servidor rodando na porta ${PORT}`));

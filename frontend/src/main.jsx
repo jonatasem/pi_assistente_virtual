@@ -1,17 +1,12 @@
-import ReactDOM from 'react-dom/client';
-import App from './App';
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import { AuthProvider } from "./context/AuthContext";
+import { TodoProvider } from "./context/TodoContext";
+import { ThemeProvider } from "./context/ThemeContext";
+import "./scss/main.scss";
 
-// Contextos
-import { AuthProvider } from './context/AuthContext';
-import { TodoProvider } from './context/TodoContext';
-import { ThemeProvider } from './context/ThemeContext';
+const root = ReactDOM.createRoot(document.getElementById("root"));
 
-// Estilos
-import './scss/main.scss';
-
-const root = ReactDOM.createRoot(document.getElementById('root'));
-
-// Estrutura de Provedores: Auth > Todo (depende de Auth) > Theme
 root.render(
   <AuthProvider>
     <TodoProvider>
