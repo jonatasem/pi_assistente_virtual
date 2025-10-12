@@ -2,12 +2,11 @@ import { useEffect } from "react";
 import Auth from "./components/Auth/Auth";
 import { useAuth } from "./context/AuthContext";
 import { useTodo } from "./context/TodoContext";
-import LogoutButton from "./components/LogoutButton";
 import Dashboard from "./pages/Dashboard";
-import Loader from "./components/Loader"; // 💡 IMPORTAR Loader
+import Loader from "./components/Loader";
 
 function App() {
-  const { isAuthenticated, isLoadingUser } = useAuth(); // 💡 USAR isLoadingUser
+  const { isAuthenticated, isLoadingUser } = useAuth();
   const { fetchTodos } = useTodo();
 
   useEffect(() => {
@@ -28,7 +27,6 @@ function App() {
     return (
       <div className="container-app-full-center">
         <Loader />
-        <p>Carregando sessão...</p>
       </div>
     );
   }
@@ -39,7 +37,6 @@ function App() {
         <Auth />
       ) : (
         <>
-          <LogoutButton />
           <Dashboard />
         </>
       )}

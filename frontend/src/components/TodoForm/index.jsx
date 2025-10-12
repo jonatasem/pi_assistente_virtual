@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useTodo } from "../../context/TodoContext";
 
-const TodoForm = () => {
+const TodoForm = ({ closeCreateTask }) => {
   const { addTodo } = useTodo();
   const [text, setText] = useState("");
   const [date, setDate] = useState("");
@@ -35,10 +35,12 @@ const TodoForm = () => {
     setTime("");
     setLocation("");
     setImportance("baixa");
+    closeCreateTask();
   };
 
   return (
     <form onSubmit={handleSubmit} className="add-todo-form">
+      <button type="button" onClick={closeCreateTask} className="btn-close-task">x</button>
       {error && <div className="error-message">{error}</div>}
       <label>
         <input
@@ -55,7 +57,7 @@ const TodoForm = () => {
           <input
             type="date"
             value={date}
-            onChange={(e) => setDate(e.target.value)}
+            onChange={(e) => setDate(e.target.value)}   
             required
           />
         </label>

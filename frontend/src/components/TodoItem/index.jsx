@@ -2,12 +2,13 @@ import { useState } from "react";
 import { useTodo } from "../../context/TodoContext";
 
 const TodoItem = ({ todo }) => {
-  const { deleteTodo, toggleTodo } = useTodo();
+  const { deleteTodo, toggleTodo, updateTodo } = useTodo();
   const [isEditing, setIsEditing] = useState(false);
   const [editedText, setEditedText] = useState(todo.text);
 
   const handleSaveEdit = () => {
     if (editedText.trim()) {
+      updateTodo(todo._id, { text: editedText });
       setIsEditing(false);
     }
   };
@@ -15,10 +16,8 @@ const TodoItem = ({ todo }) => {
   const importanceClass = `priority-${todo.importance}`;
 
   return (
-    <li
-      className={`todo-item ${todo.status === "concluído" ? "completed" : ""} ${importanceClass}`}
-    >
-      <div className="item-content">
+    <tr className={`todo-item ${todo.status === "concluído" ? "completed" : ""}`}>
+      <td>
         {isEditing ? (
           <input
             type="text"
@@ -27,30 +26,25 @@ const TodoItem = ({ todo }) => {
             onBlur={handleSaveEdit}
             onKeyDown={(e) => e.key === "Enter" && handleSaveEdit()}
             autoFocus
+            className="search-input-task"
           />
         ) : (
-          <div className="todo-details">
-            <span className="todo-text">{todo.text}</span>
-            <p className="todo-meta">
-              Data: **{todo.date}** | Horário: **{todo.time}**
-            </p>
-            {todo.location && (
-              <p className="todo-meta">Local: {todo.location}</p>
-            )}
-            <p className={`todo-importance ${importanceClass}`}>
-              Importância: {todo.importance}
-            </p>
-          </div>
+          <span className="todo-text">{todo.text}</span>
         )}
-      </div>
-
-      <div className="todo-actions">
+      </td>
+      <td className={`${importanceClass}`}>{todo.importance}</td>
+      <td>{todo.status}</td>
+      <td>{todo.date}</td>
+      <td>{todo.location || "N/A"}</td>
+      <td className="todo-actions">
         {todo.status !== "concluído" && (
-          <button
-            className="btn-conclusion"
-            onClick={() => toggleTodo(todo._id)}
-          >
+          <button className="btn-conclusion" onClick={() => toggleTodo(todo._id)}>
             Concluir
+          </button>
+        )}
+        {todo.status !== "pendente" && (
+          <button className="btn-conclusion" onClick={() => toggleTodo(todo._id)}>
+            Desfazer
           </button>
         )}
         {isEditing ? (
@@ -65,8 +59,8 @@ const TodoItem = ({ todo }) => {
         <button onClick={() => deleteTodo(todo._id)} className="btn-delete">
           Excluir
         </button>
-      </div>
-    </li>
+      </td>
+    </tr>
   );
 };
 

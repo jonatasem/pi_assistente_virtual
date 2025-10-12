@@ -5,8 +5,8 @@ const TodoContext = createContext();
 
 export const TodoProvider = ({ children }) => {
   const [todos, setTodos] = useState([]);
-  const [isLoading, setIsLoading] = useState(false); // 💡 NOVO: Estado de carregamento
-  const [error, setError] = useState(null); // 💡 NOVO: Estado de erro
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState(null);
   const { isAuthenticated } = useAuth();
 
   const getAuthHeaders = () => {
@@ -21,7 +21,7 @@ export const TodoProvider = ({ children }) => {
     if (!isAuthenticated) return;
 
     setError(null);
-    setIsLoading(true); // Inicia carregamento
+    setIsLoading(true);
 
     try {
       const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos`, {
@@ -36,7 +36,7 @@ export const TodoProvider = ({ children }) => {
       console.error("Erro na requisição de tarefas:", fetchError.message);
       setError("Não foi possível carregar suas tarefas. Tente recarregar a página.");
     } finally {
-      setIsLoading(false); // Finaliza o carregamento
+      setIsLoading(false);
     }
   }, [isAuthenticated]);
 
@@ -83,9 +83,10 @@ export const TodoProvider = ({ children }) => {
     const todoToUpdate = todos.find((todo) => todo._id === id);
     if (!todoToUpdate) return;
 
+    // Atualiza o status corretamente
     const updatedStatus = todoToUpdate.status === "pendente" ? "concluído" : "pendente";
 
-    // Otimização: Atualização otimista (UI atualiza antes da resposta)
+    // Atualiza o estado local otimisticamente
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>
         todo._id === id ? { ...todo, status: updatedStatus } : todo
@@ -106,12 +107,11 @@ export const TodoProvider = ({ children }) => {
         const errorData = await response.json();
         throw new Error(errorData.msg || "Erro ao atualizar tarefa.");
       }
-
     } catch (toggleError) {
       console.error("Erro na atualização da tarefa:", toggleError.message);
       setError(`Erro ao atualizar: ${toggleError.message}`);
 
-      // Reverter o estado em caso de falha na API
+      // Reverte o status se houver erro
       setTodos((prevTodos) =>
         prevTodos.map((todo) =>
           todo._id === id ? { ...todo, status: todoToUpdate.status } : todo
@@ -120,15 +120,41 @@ export const TodoProvider = ({ children }) => {
     }
   };
 
+  const updateTodo = async (id, updates) => {
+    try {
+      const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos/${id}`, {
+        method: "PATCH",
+        headers: {
+          ...getAuthHeaders(),
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(updates), // Enviando dados atualizados
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.msg || "Erro ao atualizar tarefa.");
+      }
+
+      setTodos((prevTodos) =>
+        prevTodos.map((todo) => (todo._id === id ? { ...todo, ...updates } : todo))
+      );
+    } catch (updateError) {
+      console.error("Erro na atualização da tarefa:", updateError.message);
+      setError(`Erro ao atualizar: ${updateError.message}`);
+    }
+  };
+
   const value = {
     todos,
     addTodo,
     deleteTodo,
     toggleTodo,
+    updateTodo, // Exportando a função updateTodo
     fetchTodos,
-    isLoading, // 💡 EXPOR
-    error, // 💡 EXPOR
-    setError, // 💡 Para limpar erros de fora
+    isLoading,
+    error,
+    setError,
   };
 
   return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;

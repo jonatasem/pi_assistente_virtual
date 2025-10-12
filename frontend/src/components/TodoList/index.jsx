@@ -1,4 +1,3 @@
-import React from "react";
 import { useTodo } from "../../context/TodoContext";
 import TodoItem from "../TodoItem";
 
@@ -7,14 +6,27 @@ const TodoList = () => {
 
   return (
     <div className="todo-list-container">
-      <h3 className="list-title">Minhas Tarefas</h3>
-      <ul className="todo-items">
-        {todos.length === 0 ? (
-          <p className="no-todos-msg">Nenhum lembrete agendado. Adicione um!</p>
-        ) : (
-          todos.map((todo) => <TodoItem key={todo._id} todo={todo} />)
-        )}
-      </ul>
+      {todos.length === 0 ? (
+        <p className="no-todos-msg">Nenhum lembrete agendado. Adicione um!</p>
+      ) : (
+        <table className="main-todo-list">
+          <thead>
+            <tr>
+              <th>Minhas tarefas</th>
+              <th>Prioridades</th>
+              <th>Status</th>
+              <th>Prazo</th>
+              <th>Lista</th>
+              <th>Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            {todos.map((todo) => (
+              <TodoItem key={todo._id} todo={todo} />
+            ))}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 };
