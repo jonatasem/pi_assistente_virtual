@@ -12,9 +12,7 @@ body.light {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   }
 
-  .add-todo-form,
-  .todo-list-container,
-  .todo-item {
+  .add-todo-form {
     background-color: #fff;
     color: var(--text-color);
     border: 1px solid #ccc; // Adiciona borda leve
@@ -31,9 +29,7 @@ body.dark {
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.5);
   }
 
-  .add-todo-form,
-  .todo-list-container,
-  .todo-item {
+  .add-todo-form {
     background-color: #333; // Cor de fundo escura
     color: var(--text-color);
     border: 1px solid #444; // Borda levemente mais clara
@@ -78,43 +74,3 @@ body.dark {
   }
 }
 
-// --- Estilos da Lista de Tarefas (TodoList) ---
-.todo-list-container {
-  .todo-items {
-    transition: all 0.3s ease-in-out; // Efeito suave na transição da lista
-  }
-}
-
-// --- Estilos do Item da Lista (TodoItem) ---
-.todo-item {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  padding: 1rem 1.5rem;
-  border-radius: 1rem;
-  transition: box-shadow 0.3s, transform 0.1s;
-
-  &:hover {
-    transform: scale(1.02); // Efeito de zoom ao passar o mouse
-    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); // Sombra mais intensa
-  }
-
-  &.completed {
-    opacity: 0.6;
-    text-decoration: line-through;
-  }
-
-  .todo-details {
-    transition: color 0.3s ease; // Transição na mudança de cor do texto
-  }
-
-  .todo-actions {
-    button {
-      transition: background-color 0.3s, transform 0.2s; // Transição suave nos botões
-
-      &:hover {
-        transform: scale(1.05); // Efeito de crescimento ao passar o mouse
-      }
-    }
-  }
-}
