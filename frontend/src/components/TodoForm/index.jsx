@@ -1,5 +1,11 @@
+//depencies
 import { useState } from "react";
+
+//context
 import { useTodo } from "../../context/TodoContext";
+
+//style
+import './index.scss';
 
 const TodoForm = ({ closeCreateTask }) => {
   const { addTodo } = useTodo();
@@ -39,62 +45,70 @@ const TodoForm = ({ closeCreateTask }) => {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="add-todo-form">
-      <button type="button" onClick={closeCreateTask} className="btn-close-task">x</button>
-      {error && <div className="error-message">{error}</div>}
-      <label>
-        <input
-          type="text"
-          placeholder="Nome da Tarefa"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-          required
-        />
-      </label>
-      <div className="date-time-inputs">
-        <label>
-          Data:
-          <input
-            type="date"
-            value={date}
-            onChange={(e) => setDate(e.target.value)}   
-            required
-          />
-        </label>
-        <label>
-          Hora:
-          <input
-            type="time"
-            value={time}
-            onChange={(e) => setTime(e.target.value)}
-            required
-          />
-        </label>
-      </div>
-      <label>
-        Local:
-        <input
-          type="text"
-          placeholder="Local (Opcional)"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-        />
-      </label>
-      <label>
-        Importância:
-        <select
-          value={importance}
-          onChange={(e) => setImportance(e.target.value)}
+    <section className="layout-add-form">
+      <form onSubmit={handleSubmit} className="add-todo-form">
+        <button
+          type="button"
+          onClick={closeCreateTask}
+          className="btn-close-task"
         >
-          <option value="baixa">Baixa</option>
-          <option value="media">Média</option>
-          <option value="alta">Alta</option>
-        </select>
-      </label>
-      <button type="submit" className="btn-add-todo">
-        Adicionar Lembrete
-      </button>
-    </form>
+          x
+        </button>
+        {error && <div className="error-message">{error}</div>}
+        <label>
+          <input
+            type="text"
+            placeholder="Nome da Tarefa"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+            required
+          />
+        </label>
+        <div className="date-time-inputs">
+          <label>
+            Data:
+            <input
+              type="date"
+              value={date}
+              onChange={(e) => setDate(e.target.value)}
+              required
+            />
+          </label>
+          <label>
+            Hora:
+            <input
+              type="time"
+              value={time}
+              onChange={(e) => setTime(e.target.value)}
+              required
+            />
+          </label>
+        </div>
+        <label>
+          Local:
+          <input
+            type="text"
+            placeholder="Local (Opcional)"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+          />
+        </label>
+        <label>
+          Importância:
+          <select
+            value={importance}
+            onChange={(e) => setImportance(e.target.value)}
+          >
+            <option value="baixa">Baixa</option>
+            <option value="media">Média</option>
+            <option value="alta">Alta</option>
+          </select>
+        </label>
+        <button type="submit" className="btn-add-todo">
+          Adicionar Lembrete
+        </button>
+      </form>
+    </section>
   );
 };
 

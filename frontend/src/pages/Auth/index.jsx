@@ -1,13 +1,19 @@
 import { useState } from "react";
 import { useAuth } from "../../context/AuthContext";
 import { FaChevronRight } from "react-icons/fa6";
-import Loader from "../Loader";
+import Loading from "../../components/Loading";
+import "./index.scss";
 
 const Auth = () => {
   const { login } = useAuth();
   const [isRegistering, setIsRegistering] = useState(true);
   const [error, setError] = useState(null);
-  const [formData, setFormData] = useState({ name: "", email: "", password: "", phoneNumber: "" });
+  const [formData, setFormData] = useState({
+    name: "",
+    email: "",
+    password: "",
+    phoneNumber: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
 
   const handleChange = (e) => {
@@ -26,7 +32,9 @@ const Auth = () => {
 
     // Validação do Telefone apenas para Registro
     if (isRegistering && !isPhoneValid(formData.phoneNumber)) {
-      setError("Telefone inválido. Use o formato internacional (ex: +5511999998888).");
+      setError(
+        "Telefone inválido. Use o formato internacional (ex: +5511999998888).",
+      );
       setIsLoading(false);
       return;
     }
@@ -47,12 +55,12 @@ const Auth = () => {
 
       const data = await response.json();
 
-      if (!response.ok) throw new Error(data.msg || "Erro desconhecido na autenticação.");
+      if (!response.ok)
+        throw new Error(data.msg || "Erro desconhecido na autenticação.");
 
       login(data.token, data.userId);
       // Opcional: Manter o email/telefone ou limpar completamente
       setFormData({ name: "", email: "", password: "", phoneNumber: "" });
-
     } catch (err) {
       console.error("Erro ao autenticar:", err.message);
       setError(err.message);
@@ -128,7 +136,7 @@ const Auth = () => {
           </label>
           <div className="container-btn-login">
             <button type="submit" className="btn-login" disabled={isLoading}>
-              {isLoading ? <Loader /> : <FaChevronRight />}
+              {isLoading ? <Loading /> : <FaChevronRight />}
             </button>
             {error && <div className="error-message">{error}</div>}
           </div>
@@ -137,8 +145,14 @@ const Auth = () => {
       <article className="auth-main">
         <div className="end-layout-main">
           <p>Bem-vindo ao futuro.</p>
-          <button type="button" onClick={toggleAuthMode} className="btn-register">
-            {isRegistering ? "Já tem uma conta? Login" : "Não tem uma conta? Registrar"}
+          <button
+            type="button"
+            onClick={toggleAuthMode}
+            className="btn-register"
+          >
+            {isRegistering
+              ? "Já tem uma conta? Login"
+              : "Não tem uma conta? Registrar"}
           </button>
         </div>
       </article>

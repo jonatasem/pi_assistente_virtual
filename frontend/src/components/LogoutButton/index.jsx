@@ -1,12 +1,19 @@
+import "./index.scss";
+
+//context
 import { useAuth } from "../../context/AuthContext";
+
+//icons
+import { PiSignOutBold } from "react-icons/pi";
 
 const LogoutButton = () => {
   const { logout } = useAuth();
 
   return (
-    <button className="btn-logout" onClick={logout}>
-      Sair
-    </button>
+    <li className="btn-logout" onClick={logout}>
+      <PiSignOutBold className="icon-logout" />
+      <p>Sign Out</p>
+    </li>
   );
 };
 

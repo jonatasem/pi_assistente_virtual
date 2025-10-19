@@ -16,8 +16,10 @@ const TodoItem = ({ todo }) => {
   const importanceClass = `priority-${todo.importance}`;
 
   return (
-    <tr className={`todo-item ${todo.status === "concluído" ? "completed" : ""}`}>
-      <td>
+    <tr
+      className={`todo-item ${todo.status === "concluído" ? "completed" : ""}`}
+    >
+      <td className="title-task">
         {isEditing ? (
           <input
             type="text"
@@ -38,12 +40,18 @@ const TodoItem = ({ todo }) => {
       <td>{todo.location || "N/A"}</td>
       <td className="todo-actions">
         {todo.status !== "concluído" && (
-          <button className="btn-conclusion" onClick={() => toggleTodo(todo._id)}>
+          <button
+            className="btn-conclusion"
+            onClick={() => toggleTodo(todo._id)}
+          >
             Concluir
           </button>
         )}
         {todo.status !== "pendente" && (
-          <button className="btn-conclusion" onClick={() => toggleTodo(todo._id)}>
+          <button
+            className="btn-conclusion"
+            onClick={() => toggleTodo(todo._id)}
+          >
             Desfazer
           </button>
         )}

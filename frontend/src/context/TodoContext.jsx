@@ -24,9 +24,12 @@ export const TodoProvider = ({ children }) => {
     setIsLoading(true);
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos`, {
-        headers: getAuthHeaders(),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/todos`,
+        {
+          headers: getAuthHeaders(),
+        },
+      );
       if (!response.ok) {
         throw new Error("Erro ao buscar tarefas.");
       }
@@ -34,7 +37,9 @@ export const TodoProvider = ({ children }) => {
       setTodos(data);
     } catch (fetchError) {
       console.error("Erro na requisição de tarefas:", fetchError.message);
-      setError("Não foi possível carregar suas tarefas. Tente recarregar a página.");
+      setError(
+        "Não foi possível carregar suas tarefas. Tente recarregar a página.",
+      );
     } finally {
       setIsLoading(false);
     }
@@ -42,11 +47,14 @@ export const TodoProvider = ({ children }) => {
 
   const addTodo = async (newTodo) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos`, {
-        method: "POST",
-        headers: getAuthHeaders(),
-        body: JSON.stringify(newTodo),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/todos`,
+        {
+          method: "POST",
+          headers: getAuthHeaders(),
+          body: JSON.stringify(newTodo),
+        },
+      );
       if (response.ok) {
         const todo = await response.json();
         setTodos((prev) => [...prev, todo]);
@@ -62,10 +70,13 @@ export const TodoProvider = ({ children }) => {
 
   const deleteTodo = async (id) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos/${id}`, {
-        method: "DELETE",
-        headers: getAuthHeaders(),
-      });
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/todos/${id}`,
+        {
+          method: "DELETE",
+          headers: getAuthHeaders(),
+        },
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -84,24 +95,28 @@ export const TodoProvider = ({ children }) => {
     if (!todoToUpdate) return;
 
     // Atualiza o status corretamente
-    const updatedStatus = todoToUpdate.status === "pendente" ? "concluído" : "pendente";
+    const updatedStatus =
+      todoToUpdate.status === "pendente" ? "concluído" : "pendente";
 
     // Atualiza o estado local otimisticamente
     setTodos((prevTodos) =>
       prevTodos.map((todo) =>
-        todo._id === id ? { ...todo, status: updatedStatus } : todo
-      )
+        todo._id === id ? { ...todo, status: updatedStatus } : todo,
+      ),
     );
 
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos/${id}`, {
-        method: "PATCH",
-        headers: {
-          ...getAuthHeaders(),
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/todos/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            ...getAuthHeaders(),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({ status: updatedStatus }),
         },
-        body: JSON.stringify({ status: updatedStatus }),
-      });
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -114,22 +129,25 @@ export const TodoProvider = ({ children }) => {
       // Reverte o status se houver erro
       setTodos((prevTodos) =>
         prevTodos.map((todo) =>
-          todo._id === id ? { ...todo, status: todoToUpdate.status } : todo
-        )
+          todo._id === id ? { ...todo, status: todoToUpdate.status } : todo,
+        ),
       );
     }
   };
 
   const updateTodo = async (id, updates) => {
     try {
-      const response = await fetch(`${import.meta.env.VITE_REACT_APP_API_URL}/todos/${id}`, {
-        method: "PATCH",
-        headers: {
-          ...getAuthHeaders(),
-          "Content-Type": "application/json",
+      const response = await fetch(
+        `${import.meta.env.VITE_REACT_APP_API_URL}/todos/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            ...getAuthHeaders(),
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(updates), // Enviando dados atualizados
         },
-        body: JSON.stringify(updates), // Enviando dados atualizados
-      });
+      );
 
       if (!response.ok) {
         const errorData = await response.json();
@@ -137,7 +155,9 @@ export const TodoProvider = ({ children }) => {
       }
 
       setTodos((prevTodos) =>
-        prevTodos.map((todo) => (todo._id === id ? { ...todo, ...updates } : todo))
+        prevTodos.map((todo) =>
+          todo._id === id ? { ...todo, ...updates } : todo,
+        ),
       );
     } catch (updateError) {
       console.error("Erro na atualização da tarefa:", updateError.message);

@@ -1,0 +1,133 @@
+.container-dashboard {
+  width: 100%;
+
+  h2 {
+    color: var(--color-text-secondary);
+    font-size: 1.2rem;
+  }
+
+  .header-dashboard {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    align-items: center;
+    padding: 1.5rem;
+    margin: 1.5rem;
+
+    .header-dash-head {
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 40px;
+        margin-right: 0.5rem;
+      }
+    }
+
+    .header-dash-main {
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 30px;
+        margin-right: 0.5rem;
+        border-radius: 1.5rem;
+      }
+    }
+  }
+
+  //main dashboard
+  .main-dashboard {
+    margin: 0 2rem;
+
+    .indicators {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 1.5rem;
+
+      .priorities-indicators,
+      .status-indicators,
+      .efficiency-indicators {
+        width: 33.1%;
+        padding: 1.5rem;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        background-color: white;
+      }
+    }
+
+    .task-filter {
+      background-color: white;
+      display: flex;
+      margin-bottom: 1.5rem;
+      padding: 1.5rem;
+      justify-content: space-between;
+
+      .filter-title {
+        display: flex;
+        align-items: center;
+
+        .icon-filter {
+          margin-right: 0.5rem;
+          font-size: 25px;
+        }
+
+        h2 {
+          font-size: 16px;
+          margin-right: 1rem;
+        }
+
+        #input-item-id {
+          padding: 0.5rem;
+          border: 1px solid silver;
+          outline: 0;
+          border-radius: 0.2rem;
+          cursor: pointer;
+        }
+      }
+
+      .filter-buttons {
+        display: flex;
+
+        .btn-task {
+          padding: 0.5rem 1rem;
+          border-radius: 0.2rem;
+          border: 1px solid #047ecfee;
+
+          &:hover {
+            cursor: pointer;
+          }
+        }
+
+        .btn-task {
+          margin: 0 1rem;
+          background-color: #047ecfee;
+          color: white;
+
+          &:active {
+            transform: scale(0.98);
+          }
+        }
+
+        .search-task {
+          position: relative;
+
+          input {
+            padding: 0.5rem 1rem;
+            border-radius: 0.2rem;
+            outline: 0;
+            border: 1px solid silver;
+            font-size: 14px;
+          }
+
+          .icon-search-task {
+            position: absolute;
+            right: 8px;
+            top: 8px;
+          }
+        }
+      }
+    }
+  }
+}

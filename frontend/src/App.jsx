@@ -1,9 +1,17 @@
+//dependencies
 import { useEffect } from "react";
-import Auth from "./components/Auth/Auth";
+
+//context
 import { useAuth } from "./context/AuthContext";
 import { useTodo } from "./context/TodoContext";
+
+//pages
 import Dashboard from "./pages/Dashboard";
-import Loader from "./components/Loader";
+
+//components
+import Auth from "./pages/Auth";
+import HeaderComponent from "./components/Header";
+import Loading from "./components/Loading";
 
 function App() {
   const { isAuthenticated, isLoadingUser } = useAuth();
@@ -11,7 +19,11 @@ function App() {
 
   useEffect(() => {
     // 1. Pedido de Permissão de Notificação
-    if ("Notification" in window && Notification.permission !== "granted" && isAuthenticated) {
+    if (
+      "Notification" in window &&
+      Notification.permission !== "granted" &&
+      isAuthenticated
+    ) {
       Notification.requestPermission();
     }
 
@@ -25,8 +37,8 @@ function App() {
   if (isLoadingUser) {
     // Mostra um loader em tela cheia enquanto carrega os dados do usuário
     return (
-      <div className="container-app-full-center">
-        <Loader />
+      <div className="container-app-full">
+        <Loading />
       </div>
     );
   }
@@ -37,7 +49,10 @@ function App() {
         <Auth />
       ) : (
         <>
-          <Dashboard />
+          <section className="app-main">
+            <HeaderComponent />
+            <Dashboard />
+          </section>
         </>
       )}
     </div>

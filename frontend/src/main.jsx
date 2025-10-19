@@ -1,8 +1,14 @@
+//dependencies
 import ReactDOM from "react-dom/client";
+
 import App from "./App";
+
+//context
 import { AuthProvider } from "./context/AuthContext";
 import { TodoProvider } from "./context/TodoContext";
 import { ThemeProvider } from "./context/ThemeContext";
+
+//style
 import "./scss/main.scss";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
@@ -14,5 +20,5 @@ root.render(
         <App />
       </ThemeProvider>
     </TodoProvider>
-  </AuthProvider>
+  </AuthProvider>,
 );

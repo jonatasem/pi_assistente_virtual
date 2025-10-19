@@ -1,5 +1,6 @@
 import { useTodo } from "../../context/TodoContext";
 import TodoItem from "../TodoItem";
+import './index.scss';
 
 const TodoList = () => {
   const { todos } = useTodo();
