@@ -14,16 +14,24 @@ const scheduleNotification = (todo) => {
     notificationTimers.delete(todo._id);
   }
 
-  // Não agenda se já estiver concluída
-  if (todo.status === "concluído") return;
+  // Não agenda se já estiver concluída ou se faltar data/hora
+  if (todo.status === "concluído" || !todo.date || !todo.time) return;
 
-  const todoDateTimeString = `${todo.date}T${todo.time}`; 
-  const todoDate = new Date(todoDateTimeString);
+  // CORREÇÃO DE FUSO HORÁRIO: Cria a data manualmente para garantir que use o fuso horário local
+  const [year, month, day] = todo.date.split('-').map(Number);
+  const [hour, minute] = todo.time.split(':').map(Number);
+  
+  // Date(ano, mês-1, dia, hora, minuto) usa o fuso horário local do cliente
+  const todoDate = new Date(year, month - 1, day, hour, minute, 0, 0); 
+  
   const now = new Date();
   const delay = todoDate.getTime() - now.getTime(); // Tempo em milissegundos
 
-  // Agenda apenas se for no futuro e a permissão for concedida
-  if (delay > 1000 && "Notification" in window && Notification.permission === "granted") {
+  // Se a tarefa já passou, não faz nada
+  if (delay < 0) return;
+  
+  // Agenda apenas se for no futuro (>= 1 segundo) e a permissão for concedida
+  if (delay >= 1000 && "Notification" in window && Notification.permission === "granted") {
       const timerId = setTimeout(() => {
           new Notification('Lembrete de Tarefa', {
               body: `Sua tarefa: "${todo.text}" está agendada para agora.`,
@@ -34,9 +42,9 @@ const scheduleNotification = (todo) => {
       
       // Armazena o ID do timer
       notificationTimers.set(todo._id, timerId);
-      console.log(`Notificação agendada para tarefa ${todo._id} em ${todoDate.toLocaleString()}.`);
+      console.log(`✅ Notificação agendada para tarefa ${todo._id} em ${todoDate.toLocaleString()}.`);
   } else if (delay > 0) {
-      console.log(`Tarefa ${todo._id} é muito iminente ou permissão pendente.`);
+      console.log(`❌ Tarefa ${todo._id} é muito iminente (${delay}ms) ou permissão pendente.`);
   }
 };
 
@@ -50,7 +58,7 @@ export const TodoProvider = ({ children }) => {
   const getAuthHeaders = () => {
     const token = localStorage.getItem("token");
     return {
-      Authorization: `Bearer ${token}`,
+      Authorization: Bearer `${token}`,
       "Content-Type": "application/json",
     };
   };
@@ -162,6 +170,7 @@ export const TodoProvider = ({ children }) => {
             notificationTimers.delete(id);
         }
     } else {
+        // Reagenda a notificação para a tarefa pendente (com a data e hora originais)
         scheduleNotification({ ...todoToUpdate, status: updatedStatus });
     }
 

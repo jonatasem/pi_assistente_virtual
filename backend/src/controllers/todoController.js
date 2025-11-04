@@ -1,30 +1,5 @@
 const Todo = require('../models/Todo');
 
-// Solicitar permissão para enviar notificações
-function requestNotificationPermission() {
-    if (Notification.permission === 'default') {
-        Notification.requestPermission().then(permission => {
-            if (permission === 'granted') {
-                console.log('Permissão para notificações concedida.');
-            } else {
-                console.log('Permissão para notificações negada.');
-            }
-        });
-    }
-}
-
-// Função para exibir a notificação
-function showNotification(title, body) {
-    if (Notification.permission === 'granted') {
-        new Notification(title, {
-            body: body,
-            icon: 'link-para-um-ícone.png' // Opcional: substitua pelo caminho do seu ícone
-        });
-    } else {
-        console.log('Permissão para notificações não concedida.');
-    }
-}
-
 // Criar nova tarefa
 const createTodo = async (req, res) => {
     const { text, date, time, location, importance } = req.body;
@@ -40,23 +15,8 @@ const createTodo = async (req, res) => {
         const todo = new Todo({ userId, text, date, time, location, importance });
         await todo.save();
 
-        // Lógica de Notificação (SetTimeout não funciona de forma persistente em um servidor Node.js
-        // de produção, mas manterei para sua arquitetura de exemplo.)
-        const todoDateTimeString = `${date}T${time}`; 
-        const todoDate = new Date(todoDateTimeString);
-        const now = new Date();
-        const delay = todoDate.getTime() - now.getTime(); 
-
-        if (delay > 60000) { 
-            setTimeout(() => {
-                showNotification('Lembrete de Tarefa', `Sua tarefa: "${text}" está agendada para agora.`);
-            }, delay);
-            console.log(`Notificação agendada para ${todoDate.toISOString()}. (Atraso: ${delay / 60000} minutos)`);
-        } else if (delay > 0) {
-            console.log(`A tarefa "${text}" é muito iminente (menos de 1 minuto) e não será agendada.`);
-        } else {
-            console.log(`A tarefa "${text}" foi agendada para o passado e não será notificada.`);
-        }
+        // A lógica de agendamento de notificação (setTimeout) foi removida do backend.
+        // O frontend (TodoContext.js) é agora o único responsável por agendar.
 
         res.status(201).json(todo);
     } catch (err) {
@@ -96,8 +56,6 @@ const updateTodo = async (req, res) => {
         // Aplica as atualizações e salva
         Object.assign(todo, updates);
         await todo.save();
-
-        // Lógica de Notificação: (Omitida aqui para brevidade, mas está no seu código original)
 
         res.json(todo);
     } catch (err) {
