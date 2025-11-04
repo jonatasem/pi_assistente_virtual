@@ -1,14 +1,14 @@
-//dependencies
 import { useEffect } from "react";
 
-//context
+// context
 import { useAuth } from "./context/AuthContext";
 import { useTodo } from "./context/TodoContext";
+import { useTheme } from "./context/ThemeContext"; // Adicionando importação
 
-//pages
+// pages
 import Dashboard from "./pages/Dashboard";
 
-//components
+// components
 import Auth from "./pages/Auth";
 import HeaderComponent from "./components/Header";
 import Loading from "./components/Loading";
@@ -16,23 +16,31 @@ import Loading from "./components/Loading";
 function App() {
   const { isAuthenticated, isLoadingUser } = useAuth();
   const { fetchTodos } = useTodo();
+  const { theme } = useTheme(); // Adicionando uso do hook
 
   useEffect(() => {
-    // 1. Pedido de Permissão de Notificação
+    // Aplica o tema na tag <body>
+    document.body.className = theme;
+  }, [theme]);
+
+  useEffect(() => {
+    // Pedido de Permissão de Notificação
+    // Melhoramos a condição para que peça SOMENTE se a permissão não foi concedida/negada
     if (
       "Notification" in window &&
-      Notification.permission !== "granted" &&
+      Notification.permission === "default" &&
       isAuthenticated
     ) {
       Notification.requestPermission();
     }
 
-    // 2. Busca de Tarefas
+    // Busca de Tarefas
     // Só busca tarefas se autenticado e não estiver carregando os dados do usuário
     if (isAuthenticated && !isLoadingUser) {
       fetchTodos();
     }
-  }, [isAuthenticated, fetchTodos, isLoadingUser]);
+    
+  }, [isAuthenticated, fetchTodos, isLoadingUser]); 
 
   if (isLoadingUser) {
     // Mostra um loader em tela cheia enquanto carrega os dados do usuário
