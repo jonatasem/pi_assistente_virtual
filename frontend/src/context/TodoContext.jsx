@@ -2,71 +2,60 @@ import { createContext, useContext, useState, useCallback } from "react";
 import { useAuth } from "./AuthContext";
 
 const TodoContext = createContext();
-
-// Mapa para armazenar os timers de notificação e poder cancelá-los
 const notificationTimers = new Map();
 
-// Função auxiliar para agendar notificações no Frontend
 const scheduleNotification = (todo) => {
-  // Limpa qualquer timer existente para esta tarefa (útil ao atualizar)
   if (notificationTimers.has(todo._id)) {
     clearTimeout(notificationTimers.get(todo._id));
     notificationTimers.delete(todo._id);
   }
 
-  // Não agenda se já estiver concluída ou se faltar data/hora
   if (todo.status === "concluído" || !todo.date || !todo.time) return;
 
-  // Cria a data manualmente para garantir que use o fuso horário local
   const [year, month, day] = todo.date.split('-').map(Number);
-  const [hour, minute] = todo.time.split(':').map(Number);
-  
+  const [hour, minute] = todo.time.split(':').map(Number); // Correção aqui
   const todoDate = new Date(year, month - 1, day, hour, minute, 0, 0);
   const now = new Date();
-  const delay = todoDate.getTime() - now.getTime(); // Tempo em milissegundos
+  const delay = todoDate.getTime() - now.getTime();
 
-  // Se a tarefa já passou, não faz nada
   if (delay < 0) return;
-  
-  // Verifica se a permissão foi concedida
+
   if ("Notification" in window) {
-      // Solicitar permissão se ainda não foi concedida
-      if (Notification.permission === "default") {
-          Notification.requestPermission().then(permission => {
-              if (permission === "granted") {
-                  createNotification(todo, delay);
-              }
-          });
-      } else if (Notification.permission === "granted") {
+    if (Notification.permission === "default") {
+      Notification.requestPermission().then(permission => {
+        if (permission === "granted") {
           createNotification(todo, delay);
-      } else {
-          console.log(`Permissão de notificação não concedida.`);
-      }
+        } else {
+          console.log(`Permissão de notificação não concedida. Considere habilitar nas configurações do navegador.`);
+        }
+      });
+    } else if (Notification.permission === "granted") {
+      createNotification(todo, delay);
+    } else {
+      console.log(`Permissão de notificação não concedida.`);
+    }
   } else {
-      console.log(`Este navegador não suporta notificações.`);
+    console.log(`Este navegador não suporta notificações.`);
   }
 };
 
-// Função para criar e exibir a notificação
 const createNotification = (todo, delay) => {
   if (delay >= 1000) {
-      const timerId = setTimeout(() => {
-          new Notification('Lembrete de Tarefa', {
-              body: `Sua tarefa: "${todo.text}" está agendada para agora.`,
-          });
-          // Remove o timer após a execução
-          notificationTimers.delete(todo._id);
-      }, delay);
-      
-      // Armazena o ID do timer
-      notificationTimers.set(todo._id, timerId);
-      console.log(`Notificação agendada para tarefa ${todo._id} em ${new Date(Date.now() + delay).toLocaleString()}.`);
+    const timerId = setTimeout(() => {
+      new Notification('Lembrete de Tarefa', {
+        body: `Sua tarefa: "${todo.text}" está agendada para agora.`,
+        icon: 'path/to/icon.png', // Adicione um ícone se necessário
+      });
+      notificationTimers.delete(todo._id);
+    }, delay);
+    
+    notificationTimers.set(todo._id, timerId);
+    console.log(`Notificação agendada para tarefa ${todo._id} em ${new Date(Date.now() + delay).toLocaleString()}.`);
   } else {
-      console.log(`Tarefa ${todo._id} é muito iminente (${delay}ms) ou permissão pendente.`);
+    console.log(`Tarefa ${todo._id} é muito iminente (${delay}ms) ou permissão pendente.`);
   }
 };
 
-// Provider
 export const TodoProvider = ({ children }) => {
   const [todos, setTodos] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
@@ -79,7 +68,7 @@ export const TodoProvider = ({ children }) => {
       "Content-Type": "application/json",
     };
     if (token) {
-        headers.Authorization = `Bearer ${token}`;
+      headers.Authorization = "Bearer " + token;
     }
     return headers;
   };
@@ -98,14 +87,12 @@ export const TodoProvider = ({ children }) => {
         },
       );
       if (!response.ok) {
-        throw new Error("Erro ao buscar tarefas.");
+        const errorData = await response.json();
+        throw new Error(errorData.msg || "Erro ao buscar tarefas.");
       }
       const data = await response.json();
       setTodos(data);
-      
-      // Agenda notificações para todas as tarefas carregadas
       data.forEach(scheduleNotification);
-
     } catch (fetchError) {
       console.error("Erro na requisição de tarefas:", fetchError.message);
       setError("Não foi possível carregar suas tarefas. Tente recarregar a página.");
@@ -127,10 +114,7 @@ export const TodoProvider = ({ children }) => {
       if (response.ok) {
         const todo = await response.json();
         setTodos((prev) => [...prev, todo]);
-        
-        // Agenda notificação para a nova tarefa
         scheduleNotification(todo);
-
       } else {
         const errorData = await response.json();
         throw new Error(errorData.msg || "Erro ao adicionar tarefa.");
@@ -157,77 +141,25 @@ export const TodoProvider = ({ children }) => {
       }
 
       setTodos((prevTodos) => prevTodos.filter((todo) => todo._id !== id));
-      
-      // Cancela o timer de notificação ao deletar
+
       if (notificationTimers.has(id)) {
         clearTimeout(notificationTimers.get(id));
         notificationTimers.delete(id);
       }
-
     } catch (deleteError) {
-      console.error("Erro na exclusão da tarefa:", deleteError.message);
+      console.error("Erro ao excluir tarefa:", deleteError.message);
       setError(`Erro ao excluir: ${deleteError.message}`);
     }
   };
 
-  const toggleTodo = async (id) => {
-    const todoToUpdate = todos.find((todo) => todo._id === id);
-    if (!todoToUpdate) return;
-
-    const updatedStatus = todoToUpdate.status === "pendente" ? "concluído" : "pendente";
-
-    setTodos((prevTodos) =>
-      prevTodos.map((todo) =>
-        todo._id === id ? { ...todo, status: updatedStatus } : todo,
-      ),
-    );
-
-    if (updatedStatus === "concluído") {
-        if (notificationTimers.has(id)) {
-            clearTimeout(notificationTimers.get(id));
-            notificationTimers.delete(id);
-        }
-    } else {
-        scheduleNotification({ ...todoToUpdate, status: updatedStatus });
-    }
-
+  const updateTodo = async (id, updatedFields) => {
     try {
       const response = await fetch(
         `${import.meta.env.VITE_REACT_APP_API_URL}/todos/${id}`,
         {
-          method: "PATCH",
-          headers: {
-            ...getAuthHeaders(),
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({ status: updatedStatus }),
-        },
-      );
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.msg || "Erro ao atualizar tarefa.");
-      }
-    } catch (toggleError) {
-      console.error("Erro na atualização da tarefa:", toggleError.message);
-      setError(`Erro ao atualizar: ${toggleError.message}`);
-
-      setTodos((prevTodos) =>
-        prevTodos.map((todo) =>
-          todo._id === id ? { ...todo, status: todoToUpdate.status } : todo,
-        ),
-      );
-    }
-  };
-
-  const updateTodo = async (id, updates) => {
-    try {
-      const response = await fetch(
-        `${import.meta.env.VITE_REACT_APP_API_URL}/todos/${id}`,
-        {
-          method: "PATCH",
+          method: "PUT",
           headers: getAuthHeaders(),
-          body: JSON.stringify(updates),
+          body: JSON.stringify(updatedFields),
         },
       );
 
@@ -236,35 +168,33 @@ export const TodoProvider = ({ children }) => {
         throw new Error(errorData.msg || "Erro ao atualizar tarefa.");
       }
 
-      const updatedTodo = { ...todos.find((todo) => todo._id === id), ...updates };
-
+      const updatedTodo = await response.json();
       setTodos((prevTodos) =>
-        prevTodos.map((todo) =>
-          todo._id === id ? updatedTodo : todo,
-        ),
+        prevTodos.map((todo) => (todo._id === id ? updatedTodo : todo)),
       );
-      
-      scheduleNotification(updatedTodo);
 
+      scheduleNotification(updatedTodo);
     } catch (updateError) {
-      console.error("Erro na atualização da tarefa:", updateError.message);
+      console.error("Erro na requisição de atualização:", updateError.message);
       setError(`Erro ao atualizar: ${updateError.message}`);
     }
   };
 
-  const value = {
-    todos,
-    addTodo,
-    deleteTodo,
-    toggleTodo,
-    updateTodo,
-    fetchTodos,
-    isLoading,
-    error,
-    setError,
-  };
-
-  return <TodoContext.Provider value={value}>{children}</TodoContext.Provider>;
+  return (
+    <TodoContext.Provider
+      value={{
+        todos,
+        isLoading,
+        error,
+        fetchTodos,
+        addTodo,
+        deleteTodo,
+        updateTodo, 
+      }}
+    >
+      {children}
+    </TodoContext.Provider>
+  );
 };
 
 export const useTodo = () => {
