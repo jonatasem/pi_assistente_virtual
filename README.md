@@ -1,19 +1,17 @@
 # Assistente Virtual - Gerenciador de Tarefas
 
-Uma aplicação completa de assistente virtual para gerenciar tarefas (To-Do List), com um diferencial: o envio de notificações via WhatsApp. Desenvolvido com uma arquitetura MERN Stack (MongoDB, Express, React, Node.js), este projeto demonstra a integração entre frontend, backend e serviços de terceiros.
+Uma aplicação completa de assistente virtual para gerenciar tarefas (To-Do List), com o envio de notificações. Desenvolvido com uma arquitetura MERN Stack (MongoDB, Express, React, Node.js).
 
 ## Tecnologias
 
-- **Backend**: Node.js, Express, MongoDB, Mongoose, Bcrypt, JWT, Twilio
+- **Backend**: Node.js, Express, MongoDB, Mongoose, Bcrypt, JWT
 - **Frontend**: React
 - **Banco de Dados**: MongoDB
-- **Notificações**: Twilio WhatsApp API
 
 ## Funcionalidades
 
 - **Autenticação de Usuário**: Registro e login seguros com validação de credenciais.
 - **Gerenciamento de Tarefas**: Crie, edite, remova e marque tarefas como concluídas.
-- **Notificações Automatizadas**: Receba lembretes de tarefas diretamente no seu WhatsApp através da API da Twilio.
 
 ## Como Rodar o Projeto
 
@@ -23,7 +21,6 @@ Certifique-se de ter as seguintes ferramentas instaladas em seu ambiente local:
 
 - Node.js (versão 14 ou superior)
 - MongoDB (local ou em nuvem via MongoDB Atlas)
-- Uma conta Twilio com a API do WhatsApp configurada.
 
 ### Instalação
 
@@ -44,9 +41,6 @@ Certifique-se de ter as seguintes ferramentas instaladas em seu ambiente local:
    PORT=5000
    MONGO_URI=sua_string_de_conexao_do_mongodb
    JWT_SECRET=sua_chave_secreta_para_jwt
-   TWILIO_ACCOUNT_SID=sua_sid_da_conta_twilio
-   TWILIO_AUTH_TOKEN=seu_token_de_autenticacao_twilio
-   TWILIO_WHATSAPP_NUMBER=seu_numero_twilio_whatsapp
 
 3. **Configuração do Frontend**:
 

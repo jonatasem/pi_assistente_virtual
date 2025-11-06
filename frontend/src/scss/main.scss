@@ -37,6 +37,14 @@ body {
   }
 }
 
+
+@media (max-width:1199px) {
+  .container-header {
+    display: none;
+  }
+}
+
+
 @media (max-width: 899px) {
   .container-app {
     .container-auth {

@@ -3,7 +3,7 @@ import { useEffect } from "react";
 // context
 import { useAuth } from "./context/AuthContext";
 import { useTodo } from "./context/TodoContext";
-import { useTheme } from "./context/ThemeContext"; // Adicionando importação
+import { useTheme } from "./context/ThemeContext";
 
 // pages
 import Dashboard from "./pages/Dashboard";

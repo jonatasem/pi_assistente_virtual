@@ -131,3 +131,34 @@
     }
   }
 }
+
+
+@media (max-width:999px) {
+  .container-dashboard {
+    .main-dashboard {
+      .indicators {
+        flex-wrap: wrap;
+
+        .priorities-indicators,
+        .status-indicators,
+        .efficiency-indicators {
+          width: 50%;
+          align-items: center;
+          text-align: center;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width:899px) {
+  .container-dashboard {
+    .main-dashboard {
+      .task-filter {
+        .search-task {
+          display: none;
+        }
+      }
+    }
+  }
+}
