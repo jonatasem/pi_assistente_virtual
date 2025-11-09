@@ -11,14 +11,14 @@ const TodoList = () => {
         <p className="no-todos-msg">Nenhum lembrete agendado. Adicione um!</p>
       ) : (
         <table className="main-todo-list">
-          <thead>
+          <thead className="title-todo-list">
             <tr>
               <th>Minhas tarefas</th>
-              <th>Prioridades</th>
-              <th>Status</th>
-              <th>Prazo</th>
-              <th>Lista</th>
-              <th>Ações</th>
+              <th className="item-list-priority">Prioridades</th>
+              <th className="item-list-status">Status</th>
+              <th className="item-list-data">Data</th>
+              <th className="item-list-location">Local</th>
+              <th className="item-list-actions">Ações</th>
             </tr>
           </thead>
           <tbody>

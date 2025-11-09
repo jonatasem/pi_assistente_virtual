@@ -34,13 +34,36 @@ body {
 
   .app-main {
     display: flex;
+    position: relative;
+    max-width: 1440px;
+
+    .container-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+    }
+
+    .container-dashboard {
+      position: absolute;
+      top: 0;
+      left: 250px;
+      max-width: calc(100% - 250px);
+    }
   }
 }
 
 
 @media (max-width:1199px) {
-  .container-header {
-    display: none;
+.container-app {
+  .app-main {
+      .container-header {
+        display: none;
+      }
+      .container-dashboard {
+        position: initial;
+        max-width: 100%;
+      }
+    }
   }
 }
 

@@ -1,6 +1,9 @@
 .container-header {
   width: 250px;
+  min-height: 100vh;
+  max-height: 768px;
   background-color: white;
+  box-shadow: 1px 1px 5px silver;
 
   .header-logo {
     display: flex;

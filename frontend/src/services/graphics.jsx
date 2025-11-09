@@ -36,6 +36,6 @@ export const calculateChartData = (todos) => {
       completedCount,
     ],
     priorityData: [highPriorityCount, mediumPriorityCount, lowPriorityCount],
-    efficiencyData: [completedCount, openCount], // Tarefas concluídas e pendentes
+    efficiencyData: [completedCount, openCount],
   };
 };

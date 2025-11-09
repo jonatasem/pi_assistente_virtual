@@ -60,6 +60,23 @@
         font-size: 18px;
         background-color: transparent;
       }
+
+      .password-container {
+        position: relative;
+        width: calc(100% - 4.2rem);
+
+        .toggle-password {
+          position: absolute;
+          right: 0;
+          top: 50%;
+          transform: translateY(-50%);
+          background: none;
+          border: none;
+          cursor: pointer;
+          color: silver;
+        }
+      }
+
     }
 
     .container-btn-login {
@@ -117,3 +134,4 @@
     }
   }
 }
+

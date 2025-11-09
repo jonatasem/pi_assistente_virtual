@@ -2,6 +2,7 @@
     margin: 0 2rem;
     padding: 1.5rem;
     background-color: white;
+    box-shadow: 1px 1px 5px silver;
     border-radius: 0.5rem;
 
     .no-todos-msg {
@@ -29,6 +30,11 @@
 
       .todo-item {
         transition: background-color 0.2s;
+        
+        
+        &.completed {
+            background-color: #d4edda;
+        }
 
         &:hover {
           background-color: #f9f9f9;
@@ -43,53 +49,59 @@
         }
 
         .todo-actions {
-          button {
-            margin: 0 0 0 0.5rem;
-            padding: 0.5em 1em;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-          }
+            display: flex;
+            flex-wrap: nowrap; 
 
-          .completed {
-            background-color: #d4edda;
-          }
-
-          .btn-conclusion {
-            background-color: #28a745;
-            color: white;
-
-            &:hover {
-              background-color: #218838;
+            button {
+                margin: 0 0 0 0.5rem;
+                padding: 0.5em 1em;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
             }
-          }
 
-          .btn-edit {
-            background-color: #007bff;
-            color: white;
+            .btn-conclusion {
+                background-color: #28a745;
+                color: white;
 
-            &:hover {
-              background-color: #0056b3;
+                &:hover {
+                    background-color: #218838;
+                }
             }
-          }
-
-          .btn-save {
-            background-color: #ffc107;
-            color: black;
-
-            &:hover {
-              background-color: #e0a800;
+            .btn-undo {
+                background-color: #ffc107;
+                color: black;
+                &:hover {
+                    background-color: #e0a800;
+                }
             }
-          }
 
-          .btn-delete {
-            background-color: #dc3545;
-            color: white;
+            .btn-edit {
+                background-color: #007bff;
+                color: white;
 
-            &:hover {
-              background-color: #c82333;
+                &:hover {
+                    background-color: #0056b3;
+                }
             }
-          }
+
+            .btn-save {
+                background-color: #6f42c1; 
+                color: white;
+
+                &:hover {
+                    background-color: #5d35a0;
+                }
+            }
+
+            .btn-delete {
+                background-color: #dc3545;
+                color: white;
+
+                &:hover {
+                    background-color: #c82333;
+                }
+            }
         }
 
         .search-input-task {
@@ -99,5 +111,166 @@
           color: rgb(94, 92, 92);
         }
       }
+
+      .todo-item-mobile,
+      .todo-item-mobile-details {
+        display: none;
+      }
+      
+      .priority-alta { color: #dc3545; font-weight: bold; }
+      .priority-media { color: #ffc107; font-weight: bold; }
+      .priority-baixa { color: #28a745; }
     }
+}
+
+@media (max-width: 999px) {
+  .todo-list-container {
+    .main-todo-list {
+      
+      .title-todo-list tr .item-list-location {
+        display: none;
+      }
+      
+      .todo-item-desktop td:nth-child(5) { 
+        display: none;
+      }
+    }
+  }
+}
+
+@media (max-width: 899px) {
+  .todo-list-container {
+    margin: 0 2rem; 
+
+    .main-todo-list {
+      
+      .title-todo-list {
+        display: none; 
+      }
+
+      .todo-item-desktop {
+        display: none !important; 
+      }
+
+      
+      .todo-item-mobile,
+      .todo-item-mobile-details {
+        display: table-row; 
+        border: none;
+      }
+      
+      
+      .todo-item-mobile {
+        cursor: pointer; 
+        border: 1px solid #e0e0e0;
+        margin-bottom: 0.5rem;
+        display: table-row;
+
+        td {
+            border: none;
+            padding: 1rem;
+            vertical-align: top; 
+        }
+        
+        td:nth-child(1) { width: 60%; } 
+        td:nth-child(2) { width: 25%; text-align: right; font-size: 0.9em; } 
+        td:nth-child(3) { width: 15%; text-align: right; } 
+
+        .mobile-task-content {
+          padding-left: 0.5rem; 
+        }
+
+        .mobile-task-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+
+            .todo-text {
+                flex-grow: 1;
+                padding-right: 10px;
+                font-weight: bold; 
+                line-height: 1.2;
+            }
+
+            .mobile-status {
+                padding: 0.3em 0.6em;
+                border-radius: 4px;
+                font-size: 0.8rem;
+                font-weight: normal;
+            }
+
+            .completed-badge {
+                background-color: #d4edda;
+                color: #155724;
+            }
+            .pending-badge {
+                background-color: #fff3cd;
+                color: #856404;
+            }
+        }
+
+        .mobile-expand-icon {
+            .expand-arrow {
+                display: inline-block;
+                transition: transform 0.2s;
+                font-size: 1.2rem;
+            }
+
+            .expanded {
+                transform: rotate(180deg);
+            }
+        }
+      }
+
+      
+      .todo-item-mobile-details {
+        td {
+          padding: 0;
+          border-top: none;
+          background-color: #fafafa; 
+        }
+
+        .mobile-details-content {
+          padding: 1rem;
+          border: 1px solid #e0e0e0;
+          border-top: none;
+
+          p {
+            margin: 0.5rem 0;
+            strong {
+              font-weight: bold;
+            }
+          }
+        }
+      }
+
+      
+      .mobile-actions {
+        display: flex;
+        flex-wrap: wrap; 
+        gap: 0.5rem; 
+        margin-top: 1rem;
+
+        button {
+          flex-grow: 1; 
+          margin: 0;
+          min-width: 48%; 
+          padding: 0.7em 1em; 
+        }
+      }
+    }
+  }
+}
+
+
+@media (max-width: 499px) {
+  .todo-list-container {
+    .main-todo-list {
+      .todo-item-mobile {
+        td {
+          font-size: 16px;
+        }
+      }
+    }
+  }
 }

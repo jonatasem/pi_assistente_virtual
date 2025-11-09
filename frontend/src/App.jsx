@@ -1,31 +1,21 @@
 import { useEffect } from "react";
 
-// context
 import { useAuth } from "./context/AuthContext";
 import { useTodo } from "./context/TodoContext";
-import { useTheme } from "./context/ThemeContext";
 
-// pages
 import Dashboard from "./pages/Dashboard";
-
-// components
 import Auth from "./pages/Auth";
+
 import HeaderComponent from "./components/Header";
 import Loading from "./components/Loading";
 
 function App() {
   const { isAuthenticated, isLoadingUser } = useAuth();
   const { fetchTodos } = useTodo();
-  const { theme } = useTheme(); // Adicionando uso do hook
-
-  useEffect(() => {
-    // Aplica o tema na tag <body>
-    document.body.className = theme;
-  }, [theme]);
 
   useEffect(() => {
     // Pedido de Permissão de Notificação
-    // Melhoramos a condição para que peça SOMENTE se a permissão não foi concedida/negada
+    // peça SOMENTE se a permissão não foi concedida/negada
     if (
       "Notification" in window &&
       Notification.permission === "default" &&

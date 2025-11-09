@@ -43,22 +43,28 @@
     .indicators {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 1.5rem;
+      border-radius: 0.5rem;
+      background-color: white;
+      box-shadow: 1px 1px 5px silver;
+      margin-bottom: 1rem;
 
       .priorities-indicators,
       .status-indicators,
       .efficiency-indicators {
-        width: 33.1%;
+        width: calc(100% / 3);
         padding: 1.5rem;
         display: flex;
         flex-direction: column;
         justify-content: space-between;
-        background-color: white;
+        color: black;
+        justify-content: top;
       }
     }
 
     .task-filter {
       background-color: white;
+      box-shadow: 1px 1px 5px silver;
+      border-radius: 0.5rem;
       display: flex;
       margin-bottom: 1.5rem;
       padding: 1.5rem;
@@ -68,14 +74,19 @@
         display: flex;
         align-items: center;
 
-        .icon-filter {
-          margin-right: 0.5rem;
-          font-size: 25px;
-        }
+        div {
+          display: flex;
+          align-items: center;
 
-        h2 {
-          font-size: 16px;
-          margin-right: 1rem;
+          .icon-filter {
+            margin-right: 0.5rem;
+            font-size: 25px;
+          }
+
+          h2 {
+            font-size: 16px;
+            margin-right: 1rem;
+          }
         }
 
         #input-item-id {
@@ -151,12 +162,99 @@
   }
 }
 
-@media (max-width:899px) {
+@media (max-width:799px) {
+  .container-dashboard {
+    .header-dashboard {
+      flex-direction: column-reverse;
+      align-items: normal;
+
+      .header-dash-main {
+        display: flex;
+        justify-content: end;
+      }
+    }
+    .main-dashboard {
+
+      .task-filter {
+        flex-direction: column;
+      }
+      .filter-title {
+        margin-bottom: 1.5rem;
+      }
+      .filter-buttons {
+        justify-content: end;
+      }
+    }
+  }
+}
+
+
+@media (max-width:699px) {
+  .container-dashboard {
+    .header-dashboard {
+      .header-dash-main {
+        margin-bottom: 1.5rem;
+      }
+    }
+    .main-dashboard {
+      .indicators {
+        flex-wrap: wrap;
+
+        .priorities-indicators,
+        .status-indicators,
+        .efficiency-indicators {
+          width: 100%;
+        }
+      }
+    }
+  }
+}
+
+@media (max-width:499px) {
   .container-dashboard {
     .main-dashboard {
       .task-filter {
-        .search-task {
-          display: none;
+        .filter-title {
+          justify-content: space-between;
+
+          h2 {
+            font-size: 14px;
+          }
+        }
+        .filter-buttons {
+          flex-direction: column;
+
+          .search-task {
+            margin-top: 1rem;
+            
+            input {
+              width: 100%;
+              margin: 0 auto ;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (max-width:499px) {
+  .container-dashboard {
+    .main-dashboard {
+      .task-filter {
+        .filter-title {
+          flex-direction: column;
+          align-items: normal;
+
+          div {
+            margin-bottom: 1rem;
+          }
+        }
+        .filter-buttons {
+          .btn-task {
+           width: 100%;
+           margin: 0 auto;
+          }
         }
       }
     }

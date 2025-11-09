@@ -1,6 +1,8 @@
 import { createContext, useContext, useState, useCallback } from "react";
 import { useAuth } from "./AuthContext";
 
+import imgNotification from '../assets/images/notification.svg';
+
 const TodoContext = createContext();
 const notificationTimers = new Map();
 
@@ -13,7 +15,7 @@ const scheduleNotification = (todo) => {
   if (todo.status === "concluído" || !todo.date || !todo.time) return;
 
   const [year, month, day] = todo.date.split('-').map(Number);
-  const [hour, minute] = todo.time.split(':').map(Number); // Correção aqui
+  const [hour, minute] = todo.time.split(':').map(Number);
   const todoDate = new Date(year, month - 1, day, hour, minute, 0, 0);
   const now = new Date();
   const delay = todoDate.getTime() - now.getTime();
@@ -44,7 +46,7 @@ const createNotification = (todo, delay) => {
     const timerId = setTimeout(() => {
       new Notification('Lembrete de Tarefa', {
         body: `Sua tarefa: "${todo.text}" está agendada para agora.`,
-        icon: 'path/to/icon.png', // Adicione um ícone se necessário
+        icon: imgNotification,
       });
       notificationTimers.delete(todo._id);
     }, delay);

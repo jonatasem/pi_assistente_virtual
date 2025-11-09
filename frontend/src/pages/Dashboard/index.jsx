@@ -1,9 +1,6 @@
 import "./index.scss";
-
-//dependencies
 import { useState, useEffect } from "react";
 
-//components
 import TodoList from "../../components/TodoList";
 import BarChart from "../../components/BarChart";
 import StatusChart from "../../components/StatusChart";
@@ -17,11 +14,9 @@ import { useTodo } from "../../context/TodoContext";
 //data
 import { calculateChartData } from "../../services/graphics";
 
-//images
 import imgUserDefault from "../../assets/images/user-default.webp";
 import imgFileCheck from "../../assets/images/file-check.svg";
 
-//icons
 import { FiFilter } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
 
@@ -143,8 +138,10 @@ export default function Dashboard() {
 
         <section className="task-filter">
           <article className="filter-title">
-            <FiFilter className="icon-filter" />
-            <h2>FILTROS</h2>
+            <div>
+              <FiFilter className="icon-filter" />
+              <h2>FILTROS</h2>
+            </div>
             <select name="input-item" id="input-item-id">
               <option value="">Selecione uma opção</option>
               <option value="qa-design">QA Design</option>

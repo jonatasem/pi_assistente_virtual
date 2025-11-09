@@ -1,24 +1,17 @@
-//dependencies
-import ReactDOM from "react-dom/client";
+import "./scss/main.scss";
 
+import ReactDOM from "react-dom/client";
 import App from "./App";
 
-//context
 import { AuthProvider } from "./context/AuthContext";
 import { TodoProvider } from "./context/TodoContext";
-import { ThemeProvider } from "./context/ThemeContext";
-
-//style
-import "./scss/main.scss";
 
 const root = ReactDOM.createRoot(document.getElementById("root"));
 
 root.render(
   <AuthProvider>
     <TodoProvider>
-      <ThemeProvider>
-        <App />
-      </ThemeProvider>
+      <App />
     </TodoProvider>
   </AuthProvider>,
 );
