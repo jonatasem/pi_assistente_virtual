@@ -191,7 +191,7 @@ export const TodoProvider = ({ children }) => {
         fetchTodos,
         addTodo,
         deleteTodo,
-        updateTodo, 
+        updateTodo,
       }}
     >
       {children}

@@ -93,5 +93,38 @@
       }
     }
   }
+}
 
+@media (max-width:1199px) {
+  .layout-add-form {
+    padding: 2rem 0;
+
+    .add-todo-form {
+      width: 60%;
+    }
+  }
+}
+
+@media (max-width:899px) {
+  .layout-add-form {
+    .add-todo-form {
+      width: 80%;
+    }
+  }
+}
+
+@media (max-width:499px) {
+  .layout-add-form {
+    .add-todo-form {
+      width: 90%;
+
+      .date-time-inputs {
+        flex-direction: column;
+        
+        input {
+          width: 100%;
+        }
+      }
+    }
+  }
 }

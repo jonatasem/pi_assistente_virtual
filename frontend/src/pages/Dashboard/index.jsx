@@ -19,10 +19,15 @@ import imgFileCheck from "../../assets/images/file-check.svg";
 
 import { FiFilter } from "react-icons/fi";
 import { CiSearch } from "react-icons/ci";
+import { FaBars, FaXmark } from "react-icons/fa6";
+import LogoutButton from "../../components/LogoutButton";
 
 export default function Dashboard() {
   const { user } = useAuth();
   const { todos } = useTodo();
+
+  // Estado para controlar a visibilidade do menu mobile
+  const [ isMobileMenu, setIsMobileMenu ] = useState(false);
 
   // Estado para controlar a visibilidade do TodoForm
   const [isTodoFormVisible, setIsTodoFormVisible] = useState(false);
@@ -93,6 +98,10 @@ export default function Dashboard() {
   const toggleTodoForm = () => {
     setIsTodoFormVisible((prevState) => !prevState);
   };
+  
+  const toggleMobileMenu = () => {
+    setIsMobileMenu(prev => !prev);
+  };
 
   return (
     <section className="container-dashboard">
@@ -108,6 +117,29 @@ export default function Dashboard() {
             <p>Acompanhe o desempenho geral em suas tarefas</p>
           </div>
         </article>
+
+        <div className="container-mobile-head">
+          {/* Se é TRUE, mostra FaXmark (o X) */}
+          {isMobileMenu ? (
+            <div className="icon-mobile">
+              <FaXmark onClick={toggleMobileMenu} style={{ cursor: 'pointer' }} />
+            </div>
+          ) : (
+            // Se é FALSE, mostra FaBars (as barras)
+            <div className="icon-mobile">
+              <FaBars onClick={toggleMobileMenu} style={{ cursor: 'pointer' }} />
+            </div>
+          )}
+          
+          {isMobileMenu && (
+            <nav className="mobile-menu-content">
+                <p>Olá, {user?.name || "Visitante"}</p>
+                <div className="logout-mobile">
+                  <LogoutButton />
+                </div>
+            </nav>
+          )}
+        </div>
 
         <article className="header-dash-main">
           <img src={user?.image || imgUserDefault} alt="imagem do usuario" />

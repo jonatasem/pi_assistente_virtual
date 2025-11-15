@@ -12,7 +12,7 @@ const LogoutButton = () => {
   return (
     <li className="btn-logout" onClick={logout}>
       <PiSignOutBold className="icon-logout" />
-      <p>Sign Out</p>
+      <p>Logout</p>
     </li>
   );
 };

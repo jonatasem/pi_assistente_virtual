@@ -94,11 +94,10 @@ const TodoItem = ({ todo }) => {
         <td className="mobile-task-content">
             <div className="mobile-task-header">
                 {renderTaskContent()}
-                <span className={`mobile-status ${todo.status === "concluído" ? "completed-badge" : "pending-badge"}`}>{`todo.status`}</span>
+                <span className={`mobile-status ${todo.status === "concluído" ? "completed-badge" : "pending-badge"}`}></span>
             </div>
         </td>
         {/* Coluna 2: Data */}
-        <td className="mobile-date">{`todo.date`}</td>
         {/* Coluna 3: Ícone de Expansão */}
         <td className="mobile-expand-icon">
             <span className={`expand-arrow ${isExpanded ? 'expanded' : ''}`}>{isExpanded ? '▲' : '▼'}</span>
@@ -111,6 +110,7 @@ const TodoItem = ({ todo }) => {
             {/* O colSpan cobre todas as colunas da linha mobile (3) */}
             <td colSpan="3"> 
                 <div className="mobile-details-content">
+                  <p>Status: {todo.status}</p>
                     <p><strong>Prioridade:</strong> <span className={importanceClass}>{todo.importance}</span></p>
                     <p><strong>Local:</strong> {todo.location || "N/A"}</p>
                     {renderActions(true)} {/* Usa a versão mobile dos botões */}
