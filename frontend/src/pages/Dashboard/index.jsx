@@ -170,8 +170,8 @@ export default function Dashboard() {
             </div>
           </article>
         </section>
+        <TodoList />
       </main>
-      <TodoList />
       {isTodoFormVisible && (
         <section className="container-task-create">
           <TodoForm closeCreateTask={toggleTodoForm} />

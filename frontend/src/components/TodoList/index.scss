@@ -1,103 +1,210 @@
 .todo-list-container {
-    margin: 0 2rem;
-    padding: 1.5rem;
-    background-color: white;
-    border-radius: 0.5rem;
+  padding: 1.5rem;
+  background-color: white;
+  border-radius: 0.5rem;
 
-    .no-todos-msg {
-      text-align: center;
-      font-size: 1.2rem;
-      color: #666;
+  .no-todos-msg {
+    text-align: center;
+    font-size: 1.2rem;
+    color: #666;
+    padding: 1rem;
+  }
+
+  /* =====================================================
+     TABELA — DESKTOP / TELAS GRANDES
+  ===================================================== */
+  .main-todo-list {
+    width: 100%;
+    border-collapse: collapse;
+    table-layout: fixed; /* 🔥 Melhora 100% a responsividade */
+    
+    th,
+    td {
       padding: 1rem;
+      border: 1px solid #e0e0e0;
+      text-align: left;
+      overflow-wrap: break-word;
+      word-break: break-word;
+      white-space: normal;
+      font-size: 1rem;
     }
 
+    th {
+      background-color: #f5f5f5;
+      font-weight: bold;
+    }
+
+    .todo-item {
+      transition: background-color 0.2s;
+
+      &:hover {
+        background-color: #f9f9f9;
+      }
+
+      .title-task {
+        max-width: 230px;
+
+        .todo-text {
+          display: block;
+          white-space: normal;
+          word-break: break-word;
+          line-height: 1.4;
+        }
+      }
+
+      .todo-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+
+        button {
+          padding: 0.45em 0.8em;
+          border: none;
+          border-radius: 4px;
+          cursor: pointer;
+          min-width: 95px;             /* 🔥 Botões sempre confortáveis */
+        }
+
+        .btn-conclusion {
+          background-color: #28a745;
+          color: white;
+
+          &:hover {
+            background-color: #218838;
+          }
+        }
+
+        .btn-edit {
+          background-color: #007bff;
+          color: white;
+
+          &:hover {
+            background-color: #0056b3;
+          }
+        }
+
+        .btn-save {
+          background-color: #ffc107;
+          color: black;
+
+          &:hover {
+            background-color: #e0a800;
+          }
+        }
+
+        .btn-delete {
+          background-color: #dc3545;
+          color: white;
+
+          &:hover {
+            background-color: #c82333;
+          }
+        }
+      }
+
+      .search-input-task {
+        padding: 0.5rem;
+        border: 1px solid silver;
+        outline: none;
+        color: rgb(94, 92, 92);
+      }
+    }
+  }
+
+  /* =====================================================
+      RESPONSIVIDADE DO TEXTO — MELHORADA
+  ===================================================== */
+
+  @media (max-width: 950px) {
+    .main-todo-list th,
+    .main-todo-list td {
+      font-size: 0.9rem;
+      padding: 0.8rem;
+    }
+
+    .todo-actions button {
+      min-width: 80px;
+      padding: 0.4em 0.6em;
+      font-size: 0.85rem;
+    }
+  }
+
+  @media (max-width: 750px) {
+    .main-todo-list th,
+    .main-todo-list td {
+      font-size: 0.82rem;
+      padding: 0.6rem;
+    }
+
+    .title-task {
+      max-width: 170px;
+    }
+
+    .todo-actions {
+      button {
+        flex: 1 1 46%;
+        min-width: auto;
+      }
+    }
+  }
+
+  /* =====================================================
+      TELAS MUITO PEQUENAS → USA CARD
+  ===================================================== */
+  @media (max-width: 650px) {
     .main-todo-list {
-      width: 100%;
-      border-collapse: collapse;
+      display: none;
+    }
 
-      th,
-      td {
-        padding: 1rem;
-        border: 1px solid #e0e0e0;
-        text-align: left;
+    .todo-card {
+      background: #fff;
+      border: 1px solid #e0e0e0;
+      border-radius: 8px;
+      padding: 1.2rem;
+      margin-bottom: 1rem;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+
+      .card-title {
+        font-size: 1.25rem;
+        font-weight: 600;
+        margin-bottom: 1rem;
       }
 
-      th {
-        background-color: #f5f5f5;
-        font-weight: bold;
+      .card-row {
+        margin-bottom: 0.5rem;
+        font-size: 0.95rem;
+        display: flex;
+        justify-content: space-between;
+
+        span { color: #555; }
+        strong { color: #333; }
       }
 
-      .todo-item {
-        transition: background-color 0.2s;
+      /* BOTÕES RESPONSIVOS E BONITOS NO CELULAR */
+      .todo-actions {
+        margin-top: 1rem;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.6rem;
 
-        &:hover {
-          background-color: #f9f9f9;
+        button {
+          flex: 1 1 48%;
+          padding: 0.9rem;
+          border-radius: 6px;
+          border: none;
+          color: white;
+          font-size: 1rem;
+          font-weight: 500;
         }
 
-        .title-task {
-          max-width: 250px;
-
-          span {
-            width: 100%;
-          }
+        .btn-conclusion { background-color: #28a745; }
+        .btn-edit { background-color: #007bff; }
+        .btn-save {
+          background-color: #ffc107;
+          color: black;
         }
-
-        .todo-actions {
-          button {
-            margin: 0 0 0 0.5rem;
-            padding: 0.5em 1em;
-            border: none;
-            border-radius: 4px;
-            cursor: pointer;
-          }
-
-          .completed {
-            background-color: #d4edda;
-          }
-
-          .btn-conclusion {
-            background-color: #28a745;
-            color: white;
-
-            &:hover {
-              background-color: #218838;
-            }
-          }
-
-          .btn-edit {
-            background-color: #007bff;
-            color: white;
-
-            &:hover {
-              background-color: #0056b3;
-            }
-          }
-
-          .btn-save {
-            background-color: #ffc107;
-            color: black;
-
-            &:hover {
-              background-color: #e0a800;
-            }
-          }
-
-          .btn-delete {
-            background-color: #dc3545;
-            color: white;
-
-            &:hover {
-              background-color: #c82333;
-            }
-          }
-        }
-
-        .search-input-task {
-          padding: 0.5rem;
-          border: 1px solid silver;
-          outline: 0;
-          color: rgb(94, 92, 92);
-        }
+        .btn-delete { background-color: #dc3545; }
       }
     }
+  }
 }

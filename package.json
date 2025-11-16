@@ -1,0 +1,19 @@
+{
+  "name": "pi_assistente_virtual",
+  "version": "1.0.0",
+  "description": "Uma aplicação completa de assistente virtual para gerenciar tarefas (To-Do List), com um diferencial: o envio de notificações via WhatsApp. Desenvolvido com uma arquitetura MERN Stack (MongoDB, Express, React, Node.js), este projeto demonstra a integração entre frontend, backend e serviços de terceiros.",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^17.2.2",
+    "express": "^5.1.0",
+    "jsonwebtoken": "^9.0.2",
+    "mongoose": "^8.18.2"
+  }
+}
