@@ -1,4 +1,5 @@
 import "./index.scss";
+import { useState } from "react";
 
 //components
 import LogoutButton from "../LogoutButton";
@@ -11,41 +12,57 @@ import { FaRegUser } from "react-icons/fa";
 import { CiSettings } from "react-icons/ci";
 import { MdOutlineDashboard } from "react-icons/md";
 import { IoAnalyticsSharp } from "react-icons/io5";
+import { GiHamburgerMenu } from "react-icons/gi"; // ícone do menu
 
 export default function HeaderComponent() {
+  const [isOpen, setIsOpen] = useState(false);
+
   return (
-    <header className="container-header">
-      <div className="header-logo">
-        <img src={imgLogoHeader} alt="imagem logo" />
-        <h1>Business</h1>
-      </div>
-      <article className="header-head">
-        <ul>
-          <li>
-            <IoAnalyticsSharp className="icon-header-nav" />
-            Analytics
-          </li>
-          <li className="active-header">
-            <MdOutlineDashboard className="icon-header-nav" />
-            Dashboard
-          </li>
-        </ul>
-      </article>
-      <article className="header-main">
-        <ul>
-          <li>
-            <FaRegUser className="icon-header-nav" />
-            Profile
-          </li>
-          <li>
-            <CiSettings className="icon-header-nav" />
-            Settings
-          </li>
-        </ul>
-      </article>
-      <article className="header-footer">
-        <LogoutButton />
-      </article>
-    </header>
+    <>
+      {/* Botão para mobile */}
+      <button
+        className="btn-toggle-menu"
+        onClick={() => setIsOpen(!isOpen)}
+      >
+        <GiHamburgerMenu />
+      </button>
+
+      <header className={`container-header ${isOpen ? "open" : ""}`}>
+        <div className="header-logo">
+          <img src={imgLogoHeader} alt="imagem logo" />
+          <h1>Business</h1>
+        </div>
+
+        <article className="header-head">
+          <ul>
+            <li>
+              <IoAnalyticsSharp className="icon-header-nav" />
+              Analytics
+            </li>
+            <li className="active-header">
+              <MdOutlineDashboard className="icon-header-nav" />
+              Dashboard
+            </li>
+          </ul>
+        </article>
+
+        <article className="header-main">
+          <ul>
+            <li>
+              <FaRegUser className="icon-header-nav" />
+              Profile
+            </li>
+            <li>
+              <CiSettings className="icon-header-nav" />
+              Settings
+            </li>
+          </ul>
+        </article>
+
+        <article className="header-footer">
+          <LogoutButton />
+        </article>
+      </header>
+    </>
   );
 }

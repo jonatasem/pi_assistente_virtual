@@ -1,62 +1,101 @@
+/* Botão toggle (só aparece no mobile) */
+.btn-toggle-menu {
+  display: none;
+  position: fixed;
+  top: 15px;
+  left: 15px;
+  z-index: 1001;
+  background: white;
+  border: none;
+  padding: 0.4rem;
+  border-radius: 6px;
+  font-size: 1.5rem;
+  box-shadow: 0 0 5px rgba(0,0,0,0.2);
+  cursor: pointer;
+}
+
+/* ===== SIDEBAR LATERAL ===== */
 .container-header {
   width: 250px;
-  background-color: white;
+  min-height: 100vh;
+  background: white;
+  position: fixed;
+  top: 0;
+  left: 0;
+  padding: 1rem 0;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.3s ease;
+  z-index: 1000;
 
   .header-logo {
     display: flex;
-    height: 50px;
     align-items: center;
-    margin: 1.5rem 0 4rem 1.5rem;
+    margin: 1rem 1.2rem 3rem 1.2rem;
 
     img {
-      margin-right: 1rem;
-      width: 30px;
-      height: 30px;
+      width: 32px;
+      height: 32px;
+      margin-right: 0.8rem;
     }
 
     h1 {
-      font-size: 20px;
+      font-size: 1.3rem;
+      font-weight: 700;
+      white-space: nowrap;
     }
   }
 
   li {
-    list-style-type: none;
-    margin: 0 0 0.8rem 1.5rem;
+    list-style: none;
+    margin: 0 0 0.7rem 1.2rem;
     display: flex;
     align-items: center;
+    font-size: 1rem;
+    transition: 0.2s ease;
 
     &:hover {
       cursor: pointer;
-    }
-
-    &:last-child {
-      margin: 0 0 0 1.5rem;
+      transform: translateX(4px);
     }
 
     .icon-header-nav {
       margin-right: 0.5rem;
+      font-size: 1.2rem;
     }
   }
 
-  .header-head {
+  .header-head ul {
+    border-bottom: 1px solid #dcdcdc;
+    padding-bottom: 1.5rem;
 
-    ul {
-      border-bottom: 1px solid silver;
-      padding: 0 0 1.5rem 0;
-
-      .active-header {
-        font-weight: 800;
-
-        .icon-header-nav {
-          font-weight: 800;
-        }
-      }
+    .active-header {
+      font-weight: 700;
     }
   }
-  .header-main {
-    ul {
-      margin: 0 0 1rem 0;
-      padding: 1.5rem 0 0 0;
+
+  .header-main ul {
+    margin-bottom: 1rem;
+    padding-top: 1.5rem;
+  }
+
+  .header-footer {
+    margin-top: auto;
+    padding-bottom: 1rem;
+  }
+}
+
+/* ======== MOBILE: Menu recolhido ======== */
+@media (max-width: 768px) {
+  .btn-toggle-menu {
+    display: block;
+  }
+
+  .container-header {
+    transform: translateX(-100%); /* fechado */
+
+    &.open {
+      transform: translateX(0); /* aberto */
     }
   }
 }
